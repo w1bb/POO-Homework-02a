@@ -6,6 +6,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import execution.interpreters.changepage.ChangePageInterpreter;
 import execution.interpreters.onpage.OnPageInterpreter;
 import execution.movies.MoviesDB;
+import execution.pages.Page;
+import execution.pages.PageQuery;
+import execution.pages.PageResponse;
+import execution.pages.unauth.UnauthHomePage;
 import execution.users.User;
 import execution.users.UsersDB;
 import fileio.ActionsInput;
@@ -13,10 +17,9 @@ import fileio.Input;
 
 import java.util.ArrayList;
 
-public final class Interpreter {
+public final class Interpreter implements GeneralInterpreter {
     private UsersDB usersDB;
     private MoviesDB moviesDB;
-    private User currentUser;
 
     private ArrayList<ActionsInput> allActionsInputs;
 
@@ -30,35 +33,63 @@ public final class Interpreter {
         input.getUsers().forEach(usersInput -> usersDB.add(usersInput.toUser()));
         input.getMovies().forEach(movieInput -> moviesDB.add(movieInput.toMovie()));
         allActionsInputs = input.getActions();
-        currentUser = null;
 
-        changePageInterpreter = new ChangePageInterpreter();
+        changePageInterpreter = new ChangePageInterpreter(usersDB, moviesDB);
         onPageInterpreter = new OnPageInterpreter();
     }
 
-
-
-    private ObjectNode executeAction(ActionsInput actionsInput) {
-        if (actionsInput.getType().equals("change page")) {
-            return changePageInterpreter.execute(actionsInput);
-        } else if (actionsInput.getType().equals("on page")) {
-            return onPageInterpreter.execute(actionsInput);
+    public PageResponse executeAction(PageQuery pq) {
+        if (pq.getCurrentActionsInput().getType().equals("change page")) {
+            return changePageInterpreter.executeAction(pq);
+        } else if (pq.getCurrentActionsInput().getType().equals("on page")) {
+            return onPageInterpreter.executeAction(pq);
         }
         // This should NEVER be reached
         return null;
     }
 
     public ArrayNode runActions() {
+        User currentUser = null;
+        Page currentPage = UnauthHomePage.getInstance();
+
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayNode returnNode = objectMapper.createArrayNode();
+
+        PageQuery pq = new PageQuery();
+        pq.setMoviesDB(moviesDB);
+        pq.setUsersDB(usersDB);
         for (ActionsInput actionsInput : allActionsInputs) {
-            ObjectNode objectNode = executeAction(actionsInput);
-            if (objectNode == null) {
+            pq.setCurrentActionsInput(actionsInput);
+            pq.setCurrentPage(currentPage);
+            pq.setCurrentUser(currentUser);
+            PageResponse pageResponse = executeAction(pq);
+            if (pageResponse == null) {
                 // This should NEVER be reached
                 System.out.println("Critical! A command was not found - '"
                         + actionsInput.toString() + "'.");
-            } else {
-                returnNode.add(objectNode);
+                continue;
+            }
+            while (pageResponse != null) {
+                currentUser = pageResponse.getNewUser();
+                currentPage = pageResponse.getNewPage();
+                pq.setCurrentUser(currentUser);
+                pq.setCurrentPage(currentPage);
+                if (pageResponse.getActionOutput() != null) {
+                    ObjectNode objectNode = pageResponse.getActionOutput();
+                    if (!objectNode.has("currentMoviesList")) {
+                        objectNode.set("currentMoviesList", objectMapper.createArrayNode());
+                    }
+                    if (!objectNode.has("currentUser")) {
+                        objectNode.set("currentUser", null);
+                    }
+                    if (!objectNode.has("error")) {
+                        objectNode.set("error", null);
+                    } else {
+                        break;
+                    }
+                    returnNode.add(objectNode);
+                }
+                pageResponse = currentPage.afterEnter(pq);
             }
         }
         return returnNode;

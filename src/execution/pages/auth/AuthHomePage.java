@@ -1,6 +1,7 @@
 package execution.pages.auth;
 
 import execution.pages.Page;
+import execution.pages.PageQuery;
 import execution.pages.PageResponse;
 import execution.users.User;
 import fileio.ActionsInput;
@@ -26,7 +27,7 @@ public final class AuthHomePage extends Page {
         return instance;
     }
 
-    public PageResponse execute(User currentUser, ActionsInput action) {
+    public PageResponse execute(PageQuery pq) {
         PageResponse pageResponse = new PageResponse();
 
         // TODO
@@ -34,7 +35,7 @@ public final class AuthHomePage extends Page {
         return pageResponse;
     }
 
-    public PageResponse afterEnter(PageResponse pageResponse, ActionsInput actionBefore) {
+    public PageResponse afterEnter(PageQuery pq) {
         // This class does not include an afterEnter method.
         return null;
     }

@@ -113,6 +113,10 @@ public final class Movie {
         return dislikes.size();
     }
 
+    public void rate(User user, int rating) {
+        ratings.put(user, rating);
+    }
+
     public double computeRating() {
         double rating = 0;
         for (Map.Entry<User, Integer> x : ratings.entrySet()) {

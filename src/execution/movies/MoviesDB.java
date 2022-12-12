@@ -2,6 +2,7 @@ package execution.movies;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import execution.users.User;
 
 import java.util.ArrayList;
 
@@ -17,15 +18,24 @@ public final class MoviesDB {
     }
 
     public MoviesDB search(final String startsWith,
-                           final String countryRestriction) {
+                           final User forUser) {
         MoviesDB moviesDB = new MoviesDB();
         for (Movie movie : movies) {
             if (movie.getName().startsWith(startsWith)
-                    && !movie.getCountriesBanned().contains(countryRestriction)) {
+                    && !movie.isBannedForUser(forUser)) {
                 moviesDB.add(movie);
             }
         }
         return moviesDB;
+    }
+
+    public Movie searchExact(final String movieName, User forUser) {
+        for (Movie movie : movies) {
+            if (movie.getName().equals(movieName)) {
+                return movie.isBannedForUser(forUser) ? null : movie;
+            }
+        }
+        return null;
     }
 
     private void selfSort(final Boolean sortRatingAscending, final Boolean sortDurationAscending) {

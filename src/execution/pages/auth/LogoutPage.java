@@ -1,6 +1,8 @@
 package execution.pages.auth;
 
 import execution.pages.Page;
+import execution.pages.PageFactory;
+import execution.pages.PageQuery;
 import execution.pages.PageResponse;
 import execution.users.User;
 import fileio.ActionsInput;
@@ -22,16 +24,14 @@ public class LogoutPage extends Page {
         return instance;
     }
 
-    public PageResponse execute(User currentUser, ActionsInput action) {
-        PageResponse pageResponse = new PageResponse();
-
-        // TODO
-
-        return pageResponse;
+    public PageResponse execute(PageQuery pq) {
+        // This class does not include an execute method.
+        return null;
     }
 
-    public PageResponse afterEnter(PageResponse pageResponse, ActionsInput actionBefore) {
-        // TODO - redirect to UnauthHomePage
-        return null;
+    public PageResponse afterEnter(PageQuery pq) {
+        PageResponse resultPageResponse = new PageResponse();
+        resultPageResponse.setNewPage(PageFactory.getPage("unauth-homepage"));
+        return resultPageResponse;
     }
 }
