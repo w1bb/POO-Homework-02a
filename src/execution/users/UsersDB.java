@@ -22,4 +22,13 @@ public class UsersDB {
         }
         return null;
     }
+
+    public boolean checkName(final String name) {
+        for (User user : users) {
+            if (user.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

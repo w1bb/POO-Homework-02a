@@ -48,4 +48,13 @@ public final class PageResponse {
         pageResponse.actionOutput = objectNode;
         return pageResponse;
     }
+
+    @Override
+    public String toString() {
+        return "PageResponse{" +
+                "newPage=" + newPage +
+                ", newUser=" + newUser +
+                ", actionOutput=" + actionOutput +
+                '}';
+    }
 }

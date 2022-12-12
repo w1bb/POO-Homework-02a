@@ -94,4 +94,20 @@ public class ActionsInput {
     public void setFilters(ActionsFiltersInput filters) {
         this.filtersInput = filters;
     }
+
+    @Override
+    public String toString() {
+        return "ActionsInput{" +
+                "count=" + count +
+                ", rate=" + rate +
+                ", type='" + type + '\'' +
+                ", page='" + page + '\'' +
+                ", feature='" + feature + '\'' +
+                ", startsWith='" + startsWith + '\'' +
+                ", movie='" + movie + '\'' +
+                ", objectType='" + objectType + '\'' +
+                ", credentialsInput=" + credentialsInput +
+                ", filtersInput=" + filtersInput +
+                '}';
+    }
 }

@@ -1,6 +1,7 @@
 package execution.pages.unauth;
 
 import execution.pages.Page;
+import execution.pages.PageQuery;
 import execution.pages.PageResponse;
 import execution.users.User;
 import fileio.ActionsInput;
@@ -25,15 +26,11 @@ public final class UnauthHomePage extends Page {
         return instance;
     }
 
-    public PageResponse execute(User currentUser, ActionsInput action) {
-        PageResponse pageResponse = new PageResponse();
-
-        // TODO
-
-        return pageResponse;
+    public PageResponse execute(PageQuery pq) {
+        return PageResponse.getErrorPageResponse();
     }
 
-    public PageResponse afterEnter(PageResponse pageResponse, ActionsInput actionBefore) {
+    public PageResponse afterEnter(PageQuery pq) {
         // This class does not include an afterEnter method.
         return null;
     }

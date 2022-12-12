@@ -92,7 +92,7 @@ public final class Test {
     private static final String CHECKER_RESOURCES_FOLDER = "checker/resources/";
     private static final File TEST_INPUTS_FILE = new File(CHECKER_RESOURCES_FOLDER + IN_FOLDER);
 
-    private static final String OUT_FILE = "results.out";
+    public static final String OUT_FILE = "results.out";
     private static final File TEST_OUT_FILE = new File(OUT_FILE);
 
     private static final File CONFIG_FILE = new File(CHECKER_RESOURCES_FOLDER + "config.json");
@@ -110,25 +110,25 @@ public final class Test {
      *
      * @param argv String[]
      */
-    public static void main(final String[] argv) {
+    public static void main(final String[] argv) throws IOException, ExecutionException, InterruptedException, TimeoutException {
         runTests();
         preTestCleanUp();
         System.exit(0);
     }
 
-    private static Config loadConfig() {
+    private static Config loadConfig() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        try {
+        //try {
             return objectMapper.readValue(CONFIG_FILE, Config.class);
-        } catch (IOException e) {
-            System.out.println("Could not find config file.");
-            System.exit(-1);
-        }
+        //} catch (IOException e) {
+        //    System.out.println("Could not find config file.");
+        //    System.exit(-1);
+        //}
 
-        return null;
+//        return null;
     }
 
-    private static void runTests() {
+    private static void runTests() throws IOException, ExecutionException, InterruptedException, TimeoutException {
         Config config = loadConfig();
         totalScore = config.getCheckstyleScore();
         int manualScore = config.getReadmeScore() + config.getHomeworkDesignScore();
@@ -144,11 +144,7 @@ public final class Test {
             runTest(testFileName, config, future);
         }
 
-        boolean checkstylePassed = Checkstyle.testCheckstyle();
-        if (checkstylePassed) {
-            score += config.getCheckstyleScore();
-        }
-
+        score += Checkstyle.testCheckstyle() ? 10 : 0;
         System.out.println("Total score: .......................... " + score + "/" + totalScore);
         System.out.println("Up to "
                 + manualScore
@@ -161,26 +157,26 @@ public final class Test {
             final String testFileName,
             final Config config,
             final Future<Object> task
-    ) {
+    ) throws IOException, ExecutionException, InterruptedException, TimeoutException {
         ObjectMapper objectMapper = new ObjectMapper();
         File refFile = new File(CHECKER_RESOURCES_FOLDER + REF_FOLDER + testFileName);
 
-        try {
+        //try {
             task.get(MAX_MILLISECONDS_PER_TEST, TimeUnit.MILLISECONDS);
-        } catch (TimeoutException e) {
-            printMessage(testFileName, "Timeout");
-            return;
-        } catch (Exception e) {
-            printMessage(testFileName, "Program ended with exception: " + e.getMessage());
-            return;
-        } finally {
-            task.cancel(true);
-        }
+        //} catch (TimeoutException | InterruptedException | ExecutionException e) {
+        //    printMessage(testFileName, "Timeout");
+        //    return;
+        //} catch (Exception e) {
+        //    printMessage(testFileName, "Program ended with exception: " + e.getMessage());
+        //    return;
+        //} finally {
+        //    task.cancel(true);
+        //}
 
         if (!TEST_OUT_FILE.exists()) {
             printMessage(testFileName, "Output file not found. Skipping test...");
         } else {
-            try {
+            //try {
                 var actual = objectMapper.readTree(TEST_OUT_FILE);
                 var expected = objectMapper.readTree(refFile);
 
@@ -193,9 +189,9 @@ public final class Test {
                 } else {
                     printMessage(testFileName, "0/" + testScore, true);
                 }
-            } catch (IOException e) {
-                printMessage(testFileName, "Output file badly formatted. Skipping test...");
-            }
+            //} catch (IOException e) {
+            //    printMessage(testFileName, "Output file badly formatted. Skipping test...");
+            //}
         }
     }
 

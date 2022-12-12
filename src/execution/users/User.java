@@ -107,7 +107,7 @@ public abstract class User {
         }
         returnNode.set("purchasedMovies", purchasedNode);
         returnNode.set("watchedMovies", watchedNode);
-        returnNode.set("watchedMovies", likedNode);
+        returnNode.set("likedMovies", likedNode);
         returnNode.set("ratedMovies", ratedNode);
 
         return returnNode;

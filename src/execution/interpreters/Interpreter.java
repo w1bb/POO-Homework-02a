@@ -62,6 +62,7 @@ public final class Interpreter implements GeneralInterpreter {
             pq.setCurrentActionsInput(actionsInput);
             pq.setCurrentPage(currentPage);
             pq.setCurrentUser(currentUser);
+            System.out.println(pq.toString());
             PageResponse pageResponse = executeAction(pq);
             if (pageResponse == null) {
                 // This should NEVER be reached
@@ -69,7 +70,10 @@ public final class Interpreter implements GeneralInterpreter {
                         + actionsInput.toString() + "'.");
                 continue;
             }
+            User originalCurrentUser = currentUser;
+            Page originalCurrentPage = currentPage;
             while (pageResponse != null) {
+                System.out.println(pageResponse.toString());
                 currentUser = pageResponse.getNewUser();
                 currentPage = pageResponse.getNewPage();
                 pq.setCurrentUser(currentUser);
@@ -85,12 +89,16 @@ public final class Interpreter implements GeneralInterpreter {
                     if (!objectNode.has("error")) {
                         objectNode.set("error", null);
                     } else {
+                        currentUser = originalCurrentUser;
+                        currentPage = originalCurrentPage;
+                        returnNode.add(objectNode);
                         break;
                     }
                     returnNode.add(objectNode);
                 }
                 pageResponse = currentPage.afterEnter(pq);
             }
+            System.out.println("===");
         }
         return returnNode;
     }

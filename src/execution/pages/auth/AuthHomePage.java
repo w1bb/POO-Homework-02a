@@ -28,11 +28,7 @@ public final class AuthHomePage extends Page {
     }
 
     public PageResponse execute(PageQuery pq) {
-        PageResponse pageResponse = new PageResponse();
-
-        // TODO
-
-        return pageResponse;
+        return PageResponse.getErrorPageResponse();
     }
 
     public PageResponse afterEnter(PageQuery pq) {

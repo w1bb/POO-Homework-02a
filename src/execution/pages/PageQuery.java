@@ -65,4 +65,16 @@ public final class PageQuery {
     public void setMoviesDB(MoviesDB moviesDB) {
         this.moviesDB = moviesDB;
     }
+
+    @Override
+    public String toString() {
+        return "PageQuery{" +
+                "oldPageResponse=" + oldPageResponse +
+                ", currentPage=" + currentPage +
+                ", currentUser=" + currentUser +
+                ", currentActionsInput=" + currentActionsInput +
+                ", usersDB=" + usersDB +
+                ", moviesDB=" + moviesDB +
+                '}';
+    }
 }
