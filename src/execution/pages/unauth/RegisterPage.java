@@ -1,4 +1,4 @@
-package execution.pages.auth;
+package execution.pages.unauth;
 
 import execution.pages.Page;
 import execution.pages.PageResponse;
@@ -8,20 +8,16 @@ import fileio.ActionsInput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public final class AuthHomePage extends Page {
-    private static AuthHomePage instance = null;
+public final class RegisterPage extends Page {
+    private static RegisterPage instance = null;
 
-    private AuthHomePage() {
-        super("auth-homepage",
-                new ArrayList<>(Arrays.asList(
-                        "movies",
-                        "upgrades",
-                        "logout")));
+    private RegisterPage() {
+        super("register", null);
     }
 
-    public static AuthHomePage getInstance() {
+    public static RegisterPage getInstance() {
         if (instance == null) {
-            instance = new AuthHomePage();
+            instance = new RegisterPage();
         }
         return instance;
     }

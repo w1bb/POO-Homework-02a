@@ -1,14 +1,15 @@
-package execution;
+package execution.interpreters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import execution.interpreters.changepage.ChangePageInterpreter;
+import execution.interpreters.onpage.OnPageInterpreter;
 import execution.movies.MoviesDB;
 import execution.users.User;
 import execution.users.UsersDB;
 import fileio.ActionsInput;
 import fileio.Input;
-import fileio.UsersInput;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,10 @@ public final class Interpreter {
 
     private ArrayList<ActionsInput> allActionsInputs;
 
+    private ChangePageInterpreter changePageInterpreter;
+
+    private OnPageInterpreter onPageInterpreter;
+
     public Interpreter(Input input) {
         this.usersDB = new UsersDB();
         this.moviesDB = new MoviesDB();
@@ -26,21 +31,18 @@ public final class Interpreter {
         input.getMovies().forEach(movieInput -> moviesDB.add(movieInput.toMovie()));
         allActionsInputs = input.getActions();
         currentUser = null;
+
+        changePageInterpreter = new ChangePageInterpreter();
+        onPageInterpreter = new OnPageInterpreter();
     }
 
-    private ObjectNode executeChangePage(ActionsInput actionsInput) {
 
-    }
-
-    private ObjectNode executeOnPage(ActionsInput actionsInput) {
-
-    }
 
     private ObjectNode executeAction(ActionsInput actionsInput) {
         if (actionsInput.getType().equals("change page")) {
-            return executeChangePage(actionsInput);
+            return changePageInterpreter.execute(actionsInput);
         } else if (actionsInput.getType().equals("on page")) {
-            return executeOnPage(actionsInput);
+            return onPageInterpreter.execute(actionsInput);
         }
         // This should NEVER be reached
         return null;

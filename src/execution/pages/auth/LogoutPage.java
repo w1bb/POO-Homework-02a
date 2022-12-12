@@ -8,20 +8,16 @@ import fileio.ActionsInput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public final class AuthHomePage extends Page {
-    private static AuthHomePage instance = null;
+public class LogoutPage extends Page {
+    private static LogoutPage instance = null;
 
-    private AuthHomePage() {
-        super("auth-homepage",
-                new ArrayList<>(Arrays.asList(
-                        "movies",
-                        "upgrades",
-                        "logout")));
+    private LogoutPage() {
+        super("logout", null);
     }
 
-    public static AuthHomePage getInstance() {
+    public static LogoutPage getInstance() {
         if (instance == null) {
-            instance = new AuthHomePage();
+            instance = new LogoutPage();
         }
         return instance;
     }
@@ -35,7 +31,7 @@ public final class AuthHomePage extends Page {
     }
 
     public PageResponse afterEnter(PageResponse pageResponse, ActionsInput actionBefore) {
-        // This class does not include an afterEnter method.
+        // TODO - redirect to UnauthHomePage
         return null;
     }
 }

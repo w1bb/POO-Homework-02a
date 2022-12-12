@@ -8,20 +8,20 @@ import fileio.ActionsInput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public final class AuthHomePage extends Page {
-    private static AuthHomePage instance = null;
+public class MoviesPage extends Page {
+    private static MoviesPage instance = null;
 
-    private AuthHomePage() {
-        super("auth-homepage",
+    private MoviesPage() {
+        super("movies",
                 new ArrayList<>(Arrays.asList(
-                        "movies",
-                        "upgrades",
+                        "auth-homepage",
+                        "see details",
                         "logout")));
     }
 
-    public static AuthHomePage getInstance() {
+    public static MoviesPage getInstance() {
         if (instance == null) {
-            instance = new AuthHomePage();
+            instance = new MoviesPage();
         }
         return instance;
     }

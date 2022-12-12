@@ -1,27 +1,20 @@
-package execution.pages.auth;
+package execution.pages.unauth;
 
 import execution.pages.Page;
 import execution.pages.PageResponse;
 import execution.users.User;
 import fileio.ActionsInput;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+public final class LoginPage extends Page {
+    private static LoginPage instance = null;
 
-public final class AuthHomePage extends Page {
-    private static AuthHomePage instance = null;
-
-    private AuthHomePage() {
-        super("auth-homepage",
-                new ArrayList<>(Arrays.asList(
-                        "movies",
-                        "upgrades",
-                        "logout")));
+    private LoginPage() {
+        super("login", null);
     }
 
-    public static AuthHomePage getInstance() {
+    public static LoginPage getInstance() {
         if (instance == null) {
-            instance = new AuthHomePage();
+            instance = new LoginPage();
         }
         return instance;
     }
