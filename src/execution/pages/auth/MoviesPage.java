@@ -35,11 +35,12 @@ public class MoviesPage extends Page {
     private PageResponse executeSearch(PageQuery pq) {
         PageResponse pageResponse = new PageResponse();
         ObjectNode objectNode = objectMapper.createObjectNode();
-        MoviesDB searchedMovies = pq.getMoviesDB().search(
+        MoviesDB curatedList = pq.getMoviesDB().search(
                 pq.getCurrentActionsInput().getStartsWith(), pq.getCurrentUser());
-        objectNode.set("currentMoviesList", searchedMovies.toArrayNode());
+        objectNode.set("currentMoviesList", curatedList.toArrayNode());
         pageResponse.setNewUser(pq.getCurrentUser());
         pageResponse.setActionOutput(objectNode);
+        pageResponse.setMoviesDBSubset(curatedList);
         return pageResponse;
     }
 
@@ -80,6 +81,12 @@ public class MoviesPage extends Page {
         objectNode.set("currentMoviesList", curatedList.toArrayNode());
         pageResponse.setNewUser(pq.getCurrentUser());
         pageResponse.setActionOutput(objectNode);
+
+//        if (pq.getCurrentActionsInput().getFilters().getContains().getActors().contains("Camey Ingold")) {
+//            System.out.println("Yeah, this is it!");
+//        }
+
+        pageResponse.setMoviesDBSubset(curatedList);
         return pageResponse;
     }
 
@@ -98,6 +105,7 @@ public class MoviesPage extends Page {
         objectNode.set("currentMoviesList", curatedList.toArrayNode());
         pageResponse.setNewUser(pq.getCurrentUser());
         pageResponse.setActionOutput(objectNode);
+        pageResponse.setMoviesDBSubset(curatedList);
         return pageResponse;
     }
 }

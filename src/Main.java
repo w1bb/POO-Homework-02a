@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // args[0]
         String inputFilename = args[0];
-        if (inputFilename.contains("basic_7.json"))
+        if (inputFilename.contains("basic_6.json"))
             solveInput(inputFilename, Test.OUT_FILE);
     }
 

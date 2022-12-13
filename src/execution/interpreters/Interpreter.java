@@ -74,6 +74,7 @@ public final class Interpreter implements GeneralInterpreter {
             }
             User originalCurrentUser = currentUser;
             Page originalCurrentPage = currentPage;
+            pq.setMoviesDBSubset(pageResponse.getMoviesDBSubset());
             while (pageResponse != null) {
                 System.out.println(pageResponse.toString());
                 if (pageResponse.getActionOutput() != null) {

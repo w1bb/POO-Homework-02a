@@ -2,12 +2,14 @@ package execution.pages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import execution.movies.MoviesDB;
 import execution.users.User;
 
 public final class PageResponse {
     private Page newPage;
     private User newUser;
     private ObjectNode actionOutput;
+    private MoviesDB moviesDBSubset;
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -15,6 +17,7 @@ public final class PageResponse {
         this.newPage = null;
         this.newUser = null;
         this.actionOutput = null;
+        this.moviesDBSubset = null;
     }
 
     public Page getNewPage() {
@@ -39,6 +42,14 @@ public final class PageResponse {
 
     public void setActionOutput(ObjectNode actionOutput) {
         this.actionOutput = actionOutput;
+    }
+
+    public MoviesDB getMoviesDBSubset() {
+        return moviesDBSubset;
+    }
+
+    public void setMoviesDBSubset(MoviesDB moviesDBSubset) {
+        this.moviesDBSubset = moviesDBSubset;
     }
 
     public static PageResponse getErrorPageResponse() {

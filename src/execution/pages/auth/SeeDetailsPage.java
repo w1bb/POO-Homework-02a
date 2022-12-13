@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import execution.AccountType;
 import execution.movies.Movie;
+import execution.movies.MoviesDB;
 import execution.pages.Page;
 import execution.pages.PageQuery;
 import execution.pages.PageResponse;
@@ -100,6 +101,10 @@ public final class SeeDetailsPage extends Page {
 
     private PageResponse executeRate(PageQuery pq) {
         User currentUser = pq.getCurrentUser();
+        if (pq.getCurrentActionsInput().getRate() < 1
+            || pq.getCurrentActionsInput().getRate() > 5) {
+            return PageResponse.getErrorPageResponse();
+        }
         if (!currentUser.getPurchasedMovies().contains(currentMovie)
                 || !currentUser.getWatchedMovies().contains(currentMovie)) {
             return PageResponse.getErrorPageResponse();
@@ -132,14 +137,15 @@ public final class SeeDetailsPage extends Page {
 
     public PageResponse afterEnter(PageQuery pq) {
         // This class does not include an afterEnter method.
-        currentMovie = pq.getMoviesDB().searchExact(
-                pq.getCurrentActionsInput().getMovie(),
-                pq.getCurrentUser());
+        MoviesDB moviesDB = (pq.getMoviesDBSubset() == null) ? pq.getMoviesDB() : pq.getMoviesDBSubset();
+        currentMovie = moviesDB.searchExact(pq.getCurrentActionsInput().getMovie(), pq.getCurrentUser());
         System.out.println(currentMovie);
         if (currentMovie == null) {
             // This should NEVER be reached (?)
             return PageResponse.getErrorPageResponse();
         }
+        if (currentMovie.getName().startsWith("Comet in Moom"))
+            System.out.println("HUGE HUGE HUGE HUGE HUGE");
         PageResponse pageResponse = new PageResponse();
         pageResponse.setNewUser(pq.getCurrentUser());
         pageResponse.setActionOutput(getCurrentMovieAsObjectNode());

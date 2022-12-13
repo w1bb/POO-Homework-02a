@@ -30,10 +30,12 @@ public class ChangePageInterpreter implements GeneralInterpreter {
         if (pq.getCurrentPage().canVisit(pq.getCurrentActionsInput().getPage())) {
             pageResponse.setNewPage(PageFactory.getPage(pq.getCurrentActionsInput().getPage()));
             pageResponse.setNewUser(pq.getCurrentUser());
+            pageResponse.setMoviesDBSubset(pq.getMoviesDBSubset());
             pageResponse.setActionOutput(null);
         } else {
             pageResponse.setNewPage(pq.getCurrentPage());
             pageResponse.setNewUser(pq.getCurrentUser());
+            pageResponse.setMoviesDBSubset(pq.getMoviesDBSubset());
             ObjectNode objectNode = objectMapper.createObjectNode();
             objectNode.put("error", "Error");
             pageResponse.setActionOutput(objectNode);

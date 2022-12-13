@@ -14,6 +14,7 @@ public final class PageQuery {
     private ActionsInput currentActionsInput;
     private UsersDB usersDB;
     private MoviesDB moviesDB;
+    private MoviesDB moviesDBSubset;
 
     public PageQuery() {
     }
@@ -64,6 +65,14 @@ public final class PageQuery {
 
     public void setMoviesDB(MoviesDB moviesDB) {
         this.moviesDB = moviesDB;
+    }
+
+    public MoviesDB getMoviesDBSubset() {
+        return moviesDBSubset;
+    }
+
+    public void setMoviesDBSubset(MoviesDB moviesDBSubset) {
+        this.moviesDBSubset = moviesDBSubset;
     }
 
     @Override
