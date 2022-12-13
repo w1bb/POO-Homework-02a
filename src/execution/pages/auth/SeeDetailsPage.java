@@ -139,13 +139,10 @@ public final class SeeDetailsPage extends Page {
         // This class does not include an afterEnter method.
         MoviesDB moviesDB = (pq.getMoviesDBSubset() == null) ? pq.getMoviesDB() : pq.getMoviesDBSubset();
         currentMovie = moviesDB.searchExact(pq.getCurrentActionsInput().getMovie(), pq.getCurrentUser());
-        System.out.println(currentMovie);
         if (currentMovie == null) {
             // This should NEVER be reached (?)
             return PageResponse.getErrorPageResponse();
         }
-        if (currentMovie.getName().startsWith("Comet in Moom"))
-            System.out.println("HUGE HUGE HUGE HUGE HUGE");
         PageResponse pageResponse = new PageResponse();
         pageResponse.setNewUser(pq.getCurrentUser());
         pageResponse.setActionOutput(getCurrentMovieAsObjectNode());

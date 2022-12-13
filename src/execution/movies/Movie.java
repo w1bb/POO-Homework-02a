@@ -99,7 +99,6 @@ public final class Movie {
     }
 
     public ErrorType like(User user) {
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (!watched.contains(user)) {
             return ErrorType.ERROR_USER_NOT_WATCH_MOVIE;
         }
@@ -155,11 +154,8 @@ public final class Movie {
         returnNode.set("actors", objectMapper.valueToTree(actors));
         returnNode.set("countriesBanned", objectMapper.valueToTree(countriesBanned));
         returnNode.put("numLikes", likes.size());
-        double computedRating = Math.round(computeRating() * 100.0);
-        if (computedRating < 1e-6)
-            returnNode.put("rating", 0);
-        else
-            returnNode.put("rating", computedRating / 100);
+        double computedRating = (double) Math.round(computeRating() * 100.0) / 100.0;
+        returnNode.put("rating", computedRating);
         returnNode.put("numRatings", ratings.size());
         return returnNode;
     }
