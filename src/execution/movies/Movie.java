@@ -35,6 +35,7 @@ public final class Movie {
         this.likes = new ArrayList<>();
         this.dislikes = new ArrayList<>();
         this.watched = new ArrayList<>();
+        this.ratings = new HashMap<>();
     }
 
     public String getName() {
@@ -122,7 +123,7 @@ public final class Movie {
         for (Map.Entry<User, Integer> x : ratings.entrySet()) {
             rating += (double) x.getValue();
         }
-        return rating / ratings.size();
+        return (ratings.size() == 0) ? 0 : rating / ratings.size();
     }
 
     public int getDuration() {
@@ -132,7 +133,6 @@ public final class Movie {
     public ObjectNode toObjectNode() {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode returnNode = objectMapper.createObjectNode();
-        DecimalFormat decimalFormat = new DecimalFormat("0.00");
         returnNode.put("name", name);
         returnNode.put("year", year);
         returnNode.put("duration", duration);
@@ -140,7 +140,11 @@ public final class Movie {
         returnNode.set("actors", objectMapper.valueToTree(actors));
         returnNode.set("countriesBanned", objectMapper.valueToTree(countriesBanned));
         returnNode.put("numLikes", likes.size());
-        returnNode.put("rating", decimalFormat.format(computeRating()));
+        double computedRating = Math.round(computeRating() * 100.0);
+        if (computedRating < 1e-6)
+            returnNode.put("rating", 0);
+        else
+            returnNode.put("rating", computedRating / 100);
         returnNode.put("numRatings", ratings.size());
         return returnNode;
     }

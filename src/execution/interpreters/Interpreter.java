@@ -74,17 +74,13 @@ public final class Interpreter implements GeneralInterpreter {
             Page originalCurrentPage = currentPage;
             while (pageResponse != null) {
                 System.out.println(pageResponse.toString());
-                currentUser = pageResponse.getNewUser();
-                currentPage = pageResponse.getNewPage();
-                pq.setCurrentUser(currentUser);
-                pq.setCurrentPage(currentPage);
                 if (pageResponse.getActionOutput() != null) {
                     ObjectNode objectNode = pageResponse.getActionOutput();
                     if (!objectNode.has("currentMoviesList")) {
                         objectNode.set("currentMoviesList", objectMapper.createArrayNode());
                     }
                     if (!objectNode.has("currentUser")) {
-                        objectNode.set("currentUser", null);
+                        objectNode.set("currentUser", currentUser.toObjectNode());
                     }
                     if (!objectNode.has("error")) {
                         objectNode.set("error", null);
@@ -96,6 +92,13 @@ public final class Interpreter implements GeneralInterpreter {
                     }
                     returnNode.add(objectNode);
                 }
+                currentUser = pageResponse.getNewUser();
+                pq.setCurrentUser(currentUser);
+                if (pageResponse.getNewPage() == null) {
+                    break;
+                }
+                currentPage = pageResponse.getNewPage();
+                pq.setCurrentPage(currentPage);
                 pageResponse = currentPage.afterEnter(pq);
             }
             System.out.println("===");

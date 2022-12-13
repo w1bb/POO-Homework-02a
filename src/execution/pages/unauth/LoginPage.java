@@ -18,6 +18,7 @@ public final class LoginPage extends Page {
     private LoginPage() {
         super("login",
                 new ArrayList<>(Arrays.asList(
+                        "login",
                         "register")));
     }
 

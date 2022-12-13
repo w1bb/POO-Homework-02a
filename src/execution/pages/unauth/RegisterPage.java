@@ -20,7 +20,8 @@ public final class RegisterPage extends Page {
     private RegisterPage() {
         super("register",
                 new ArrayList<>(Arrays.asList(
-                        "login")));
+                        "login",
+                        "register")));
     }
 
     public static RegisterPage getInstance() {

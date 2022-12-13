@@ -9,6 +9,8 @@ import execution.movies.Movie;
 import java.util.ArrayList;
 
 public abstract class User {
+    static final int BONUS_FREE_MOVIES = 15;
+
     protected final String name;
     protected String password;
     protected AccountType accountType;
@@ -36,6 +38,8 @@ public abstract class User {
         this.watchedMovies = new ArrayList<>();
         this.likedMovies = new ArrayList<>();
         this.ratedMovies = new ArrayList<>();
+
+        this.numFreePremiumMovies = UserPremium.BONUS_FREE_MOVIES;
     }
 
     public int getBalance() {
@@ -83,7 +87,7 @@ public abstract class User {
         credentialsNode.put("password", password);
         credentialsNode.put("accountType", accountType.toString());
         credentialsNode.put("country", country);
-        credentialsNode.put("balance", balance);
+        credentialsNode.put("balance", String.valueOf(balance));
         returnNode.set("credentials", credentialsNode);
 
         returnNode.put("tokensCount", tokensCount);
