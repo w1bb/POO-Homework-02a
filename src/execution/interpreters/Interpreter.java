@@ -76,19 +76,21 @@ public final class Interpreter implements GeneralInterpreter {
                 System.out.println(pageResponse.toString());
                 if (pageResponse.getActionOutput() != null) {
                     ObjectNode objectNode = pageResponse.getActionOutput();
+                    if (!objectNode.has("error")) {
+                        objectNode.set("error", null);
+                    } else {
+                        objectNode.set("currentMoviesList", objectMapper.createArrayNode());
+                        objectNode.set("currentUser", null);
+                        currentUser = originalCurrentUser;
+                        currentPage = originalCurrentPage;
+                        returnNode.add(objectNode);
+                        break;
+                    }
                     if (!objectNode.has("currentMoviesList")) {
                         objectNode.set("currentMoviesList", objectMapper.createArrayNode());
                     }
                     if (!objectNode.has("currentUser")) {
                         objectNode.set("currentUser", currentUser.toObjectNode());
-                    }
-                    if (!objectNode.has("error")) {
-                        objectNode.set("error", null);
-                    } else {
-                        currentUser = originalCurrentUser;
-                        currentPage = originalCurrentPage;
-                        returnNode.add(objectNode);
-                        break;
                     }
                     returnNode.add(objectNode);
                 }
