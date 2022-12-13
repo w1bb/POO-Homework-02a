@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class Movie {
+    private final static int GENERAL_COST = 2;
     private final String name;
     private final int year;
     private final int duration;
@@ -22,6 +23,7 @@ public final class Movie {
     private ArrayList<User> likes;
     private ArrayList<User> dislikes;
     private HashMap<User, Integer> ratings;
+    private final int tokensCost;
 
     public Movie(final String name, final int year, final int duration,
                  final ArrayList<String> genres, final ArrayList<String> actors,
@@ -36,6 +38,7 @@ public final class Movie {
         this.dislikes = new ArrayList<>();
         this.watched = new ArrayList<>();
         this.ratings = new HashMap<>();
+        this.tokensCost = GENERAL_COST;
     }
 
     public String getName() {
@@ -84,7 +87,19 @@ public final class Movie {
         return this.genres;
     }
 
+    public int getTokensCost() {
+        return tokensCost;
+    }
+
+    public void watch(User user) {
+        if (!user.getWatchedMovies().contains(this)) {
+            user.getWatchedMovies().add(this);
+            watched.add(user);
+        }
+    }
+
     public ErrorType like(User user) {
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (!watched.contains(user)) {
             return ErrorType.ERROR_USER_NOT_WATCH_MOVIE;
         }
@@ -147,5 +162,22 @@ public final class Movie {
             returnNode.put("rating", computedRating / 100);
         returnNode.put("numRatings", ratings.size());
         return returnNode;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "name='" + name + '\'' +
+                ", year=" + year +
+                ", duration=" + duration +
+                ", genres=" + genres +
+                ", actors=" + actors +
+                ", countriesBanned=" + countriesBanned +
+                ", watched=" + watched +
+                ", likes=" + likes +
+                ", dislikes=" + dislikes +
+                ", ratings=" + ratings +
+                ", tokensCost=" + tokensCost +
+                '}';
     }
 }

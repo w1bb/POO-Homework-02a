@@ -27,12 +27,28 @@ public class UpgradesPage extends Page {
         return instance;
     }
 
-    public PageResponse execute(PageQuery pq) {
+    private PageResponse executeBuyTokens(PageQuery pq) {
         PageResponse pageResponse = new PageResponse();
+        User currentUser = pq.getCurrentUser();
+        pageResponse.setNewUser(currentUser);
+        boolean bought = currentUser.buyTokens(Integer.parseInt(pq.getCurrentActionsInput().getCount()));
+        return bought ? pageResponse : PageResponse.getErrorPageResponse();
+    }
 
-        // TODO
+    private PageResponse executeBuyPremiumAccount(PageQuery pq) {
+        PageResponse pageResponse = new PageResponse();
+        User currentUser = pq.getCurrentUser();
+        pageResponse.setNewUser(currentUser);
+        boolean bought = currentUser.buyPremium();
+        return bought ? pageResponse : PageResponse.getErrorPageResponse();
+    }
 
-        return pageResponse;
+    public PageResponse execute(PageQuery pq) {
+        return switch (pq.getCurrentActionsInput().getFeature()) {
+            case "buy tokens" -> executeBuyTokens(pq);
+            case "buy premium account" -> executeBuyPremiumAccount(pq);
+            default -> PageResponse.getErrorPageResponse();
+        };
     }
 
     public PageResponse afterEnter(PageQuery pq) {

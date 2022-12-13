@@ -1,7 +1,7 @@
 package fileio;
 
 public class ActionsInput {
-    private int count;
+    private String count;
     private int rate;
     private String type;
     private String page;
@@ -15,11 +15,11 @@ public class ActionsInput {
     public ActionsInput() {
     }
 
-    public int getCount() {
+    public String getCount() {
         return this.count;
     }
 
-    public void setCount(int count) {
+    public void setCount(String count) {
         this.count = count;
     }
 

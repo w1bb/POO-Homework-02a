@@ -40,13 +40,17 @@ public final class MoviesDB {
 
     private void selfSort(final Boolean sortRatingAscending, final Boolean sortDurationAscending) {
         movies.sort((a, b) -> {
+            if (sortDurationAscending != null) {
+                if (a.getDuration() != b.getDuration()) {
+                    return (sortDurationAscending ? 1 : -1) * (a.getDuration() - b.getDuration());
+                }
+            }
             if (sortRatingAscending != null) {
                 final int aRatingInt = (int) Math.round(a.computeRating() * 100.0);
                 final int bRatingInt = (int) Math.round(b.computeRating() * 100.0);
-                return (sortRatingAscending ? 1 : -1) * (aRatingInt - bRatingInt);
-            }
-            if (sortDurationAscending != null) {
-                return (sortDurationAscending ? 1 : -1) * (a.getDuration() - b.getDuration());
+                if (aRatingInt != bRatingInt) {
+                    return (sortRatingAscending ? 1 : -1) * (aRatingInt - bRatingInt);
+                }
             }
             // This should never be reached!
             return 0;

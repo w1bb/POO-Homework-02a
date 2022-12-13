@@ -1,8 +1,7 @@
 package fileio;
 
+import execution.AccountType;
 import execution.users.User;
-import execution.users.UserPremium;
-import execution.users.UserStandard;
 
 public class UsersInput {
     private CredentialsInput credentialsInput;
@@ -21,11 +20,13 @@ public class UsersInput {
     public User toUser() {
         return switch (credentialsInput.getAccountType()) {
             case "standard" ->
-                    new UserStandard(credentialsInput.getName(), credentialsInput.getPassword(),
+                    new User(credentialsInput.getName(), credentialsInput.getPassword(),
+                            AccountType.STANDARD,
                             credentialsInput.getCountry(),
                             Integer.parseInt(credentialsInput.getBalance()));
             case "premium" ->
-                    new UserPremium(credentialsInput.getName(), credentialsInput.getPassword(),
+                    new User(credentialsInput.getName(), credentialsInput.getPassword(),
+                            AccountType.PREMIUM,
                             credentialsInput.getCountry(),
                             Integer.parseInt(credentialsInput.getBalance()));
             default -> null;

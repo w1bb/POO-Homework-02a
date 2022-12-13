@@ -65,9 +65,11 @@ public final class Interpreter implements GeneralInterpreter {
             System.out.println(pq.toString());
             PageResponse pageResponse = executeAction(pq);
             if (pageResponse == null) {
-                // This should NEVER be reached
-                System.out.println("Critical! A command was not found - '"
-                        + actionsInput.toString() + "'.");
+                ObjectNode objectNode = objectMapper.createObjectNode();
+                objectNode.set("currentMoviesList", objectMapper.createArrayNode());
+                objectNode.set("currentUser", null);
+                objectNode.put("error", "Error");
+                returnNode.add(objectNode);
                 continue;
             }
             User originalCurrentUser = currentUser;
@@ -96,6 +98,9 @@ public final class Interpreter implements GeneralInterpreter {
                 }
                 currentUser = pageResponse.getNewUser();
                 pq.setCurrentUser(currentUser);
+//                if (currentUser != null) {
+//                    System.out.println(currentUser);
+//                }
                 if (pageResponse.getNewPage() == null) {
                     break;
                 }

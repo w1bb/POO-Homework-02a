@@ -8,8 +8,9 @@ import execution.movies.Movie;
 
 import java.util.ArrayList;
 
-public abstract class User {
-    static final int BONUS_FREE_MOVIES = 15;
+public class User {
+    private static final int BONUS_FREE_MOVIES = 15;
+    private final static int PREMIUM_COST = 10;
 
     protected final String name;
     protected String password;
@@ -25,7 +26,7 @@ public abstract class User {
     protected ArrayList<Movie> likedMovies;
     protected ArrayList<Movie> ratedMovies;
 
-    User(final String name, String password, AccountType accountType, String country, int balance) {
+    public User(final String name, String password, AccountType accountType, String country, int balance) {
         this.name = name;
         this.password = password;
         this.accountType = accountType;
@@ -33,13 +34,12 @@ public abstract class User {
         this.balance = balance;
 
         this.tokensCount = 0;
-        this.numFreePremiumMovies = 0;
         this.purchasedMovies = new ArrayList<>();
         this.watchedMovies = new ArrayList<>();
         this.likedMovies = new ArrayList<>();
         this.ratedMovies = new ArrayList<>();
 
-        this.numFreePremiumMovies = UserPremium.BONUS_FREE_MOVIES;
+        this.numFreePremiumMovies = BONUS_FREE_MOVIES;
     }
 
     public int getBalance() {
@@ -76,6 +76,14 @@ public abstract class User {
 
     public final String getCountry() {
         return this.country;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 
     public final ObjectNode toObjectNode() {
@@ -147,5 +155,23 @@ public abstract class User {
 
     public void setRatedMovies(ArrayList<Movie> ratedMovies) {
         this.ratedMovies = ratedMovies;
+    }
+
+    public boolean buyTokens(int count) {
+        if (balance < count) {
+            return false;
+        }
+        balance -= count;
+        tokensCount += count;
+        return true;
+    }
+
+    public boolean buyPremium() {
+        if (tokensCount < PREMIUM_COST) {
+            return false;
+        }
+        tokensCount -= PREMIUM_COST;
+        accountType = AccountType.PREMIUM;
+        return true;
     }
 }
