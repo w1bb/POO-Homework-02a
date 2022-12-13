@@ -45,6 +45,41 @@ public class MoviesPage extends Page {
 
     private PageResponse executeFilter(PageQuery pq) {
         PageResponse pageResponse = new PageResponse();
+        ActionsInput actionsInput = pq.getCurrentActionsInput();
+
+        Boolean sortRatingAscending = null;
+        Boolean sortDurationAscending = null;
+        if (actionsInput.getFilters().getSort() != null) {
+            String actionsInputSR = actionsInput.getFilters().getSort().getRating();
+            if (actionsInputSR.equals("increasing")) {
+                sortRatingAscending = true;
+            } else if (actionsInputSR.equals("decreasing")) {
+                sortRatingAscending = false;
+            }
+
+            String actionsInputSD = actionsInput.getFilters().getSort().getDuration();
+            if (actionsInputSD.equals("increasing")) {
+                sortDurationAscending = true;
+            } else if (actionsInputSD.equals("decreasing")) {
+                sortDurationAscending = false;
+            }
+        }
+        ArrayList<String> containsActors = null;
+        ArrayList<String> containsGenres = null;
+        if (actionsInput.getFilters().getContains() != null) {
+            containsActors = actionsInput.getFilters().getContains().getActors();
+            containsGenres = actionsInput.getFilters().getContains().getGenre();
+        }
+
+        MoviesDB curatedList = pq.getMoviesDB().filter(
+                sortRatingAscending, sortDurationAscending,
+                containsActors, containsGenres,
+                pq.getCurrentUser());
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.set("currentMoviesList", curatedList.toArrayNode());
+        pageResponse.setNewUser(pq.getCurrentUser());
+        pageResponse.setActionOutput(objectNode);
         return pageResponse;
     }
 
@@ -59,7 +94,8 @@ public class MoviesPage extends Page {
     public PageResponse afterEnter(PageQuery pq) {
         PageResponse pageResponse = new PageResponse();
         ObjectNode objectNode = objectMapper.createObjectNode();
-        objectNode.set("currentMoviesList", pq.getMoviesDB().toArrayNode());
+        MoviesDB curatedList = pq.getMoviesDB().search("", pq.getCurrentUser());
+        objectNode.set("currentMoviesList", curatedList.toArrayNode());
         pageResponse.setNewUser(pq.getCurrentUser());
         pageResponse.setActionOutput(objectNode);
         return pageResponse;

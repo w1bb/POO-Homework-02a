@@ -5,6 +5,8 @@ public final class ActionsFiltersSortInput {
     private String duration;
 
     public ActionsFiltersSortInput() {
+        rating = "";
+        duration = "";
     }
 
     public String getRating() {

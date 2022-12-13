@@ -55,38 +55,39 @@ public final class MoviesDB {
 
     public MoviesDB filter(final Boolean sortRatingAscending, final Boolean sortDurationAscending,
                            final ArrayList<String> actors, final ArrayList<String> genres,
-                           final String countryRestriction) {
+                           final User forUser) {
         MoviesDB filteredDB = new MoviesDB();
         for (Movie movie : movies) {
-            boolean addable = true;
-            // Check each actor
-            for (String neededActor : actors) {
-                if (!movie.getActors().contains(neededActor)) {
-                    addable = false;
-                    break;
-                }
-            }
+            boolean addable = !movie.isBannedForUser(forUser);
             if (!addable) {
                 continue;
+            }
+            // Check each actor
+            if (actors != null) {
+                for (String neededActor : actors) {
+                    if (!movie.getActors().contains(neededActor)) {
+                        addable = false;
+                        break;
+                    }
+                }
+                if (!addable) {
+                    continue;
+                }
             }
             // Check each genre
-            for (String neededGenre : genres) {
-                if (!movie.getGenres().contains(neededGenre)) {
-                    addable = false;
-                    break;
+            if (genres != null) {
+                for (String neededGenre : genres) {
+                    if (!movie.getGenres().contains(neededGenre)) {
+                        addable = false;
+                        break;
+                    }
+                }
+                if (!addable) {
+                    continue;
                 }
             }
-            if (!addable) {
-                continue;
-            }
-            // Check if the country is restricted
-            if (movies.contains(countryRestriction)) {
-                addable = false;
-            }
             // Add good movies
-            if (addable) {
-                filteredDB.add(movie);
-            }
+            filteredDB.add(movie);
         }
         // Sort the movies and return
         filteredDB.selfSort(sortRatingAscending, sortDurationAscending);
