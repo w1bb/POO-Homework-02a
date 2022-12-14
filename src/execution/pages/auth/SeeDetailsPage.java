@@ -27,6 +27,11 @@ public final class SeeDetailsPage extends Page {
         currentMovie = null;
     }
 
+    /**
+     * This function is used for the singleton design patterns and returns the only (real) instance
+     * of this page.
+     * @return The (only) instance of the page.
+     */
     public static SeeDetailsPage getInstance() {
         if (instance == null) {
             instance = new SeeDetailsPage();
@@ -34,6 +39,11 @@ public final class SeeDetailsPage extends Page {
         return instance;
     }
 
+    /**
+     * This method executes the "purchase" feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
     private PageResponse executePurchase(final PageQuery pq) {
         // Check if it has already been purchased
         User currentUser = pq.getCurrentUser();
@@ -58,7 +68,12 @@ public final class SeeDetailsPage extends Page {
         return pageResponse;
     }
 
-    private PageResponse executeWatch(PageQuery pq) {
+    /**
+     * This method executes the "watch" feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    private PageResponse executeWatch(final PageQuery pq) {
         User currentUser = pq.getCurrentUser();
         if (!currentUser.getPurchasedMovies().contains(currentMovie)) {
             return PageResponse.getErrorPageResponse();
@@ -74,7 +89,12 @@ public final class SeeDetailsPage extends Page {
         return pageResponse;
     }
 
-    private PageResponse executeLike(PageQuery pq) {
+    /**
+     * This method executes the "like" feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    private PageResponse executeLike(final PageQuery pq) {
         User currentUser = pq.getCurrentUser();
         if (!currentUser.getPurchasedMovies().contains(currentMovie)
                 || !currentUser.getWatchedMovies().contains(currentMovie)) {
@@ -83,20 +103,22 @@ public final class SeeDetailsPage extends Page {
         if (!currentUser.getLikedMovies().contains(currentMovie)) {
             currentUser.getLikedMovies().add(currentMovie);
             currentMovie.like(currentUser);
-        } else {
-//            return PageResponse.getErrorPageResponse();
         }
         PageResponse pageResponse = new PageResponse();
-//        pageResponse.setNewPage(this);
         pageResponse.setNewUser(currentUser);
         pageResponse.setActionOutput(getCurrentMovieAsObjectNode());
         return pageResponse;
     }
 
-    private PageResponse executeRate(PageQuery pq) {
+    /**
+     * This method executes the "rate" feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    private PageResponse executeRate(final PageQuery pq) {
         User currentUser = pq.getCurrentUser();
-        if (pq.getCurrentActionsInput().getRate() < 1
-            || pq.getCurrentActionsInput().getRate() > 5) {
+        if (pq.getCurrentActionsInput().getRate() < Movie.MINIMUM_RATING
+            || pq.getCurrentActionsInput().getRate() > Movie.MAXIMUM_RATING) {
             return PageResponse.getErrorPageResponse();
         }
         if (!currentUser.getPurchasedMovies().contains(currentMovie)
@@ -106,17 +128,19 @@ public final class SeeDetailsPage extends Page {
         if (!currentUser.getRatedMovies().contains(currentMovie)) {
             currentUser.getRatedMovies().add(currentMovie);
             currentMovie.rate(currentUser, pq.getCurrentActionsInput().getRate());
-        } else {
-//            return PageResponse.getErrorPageResponse();
         }
         PageResponse pageResponse = new PageResponse();
-//        pageResponse.setNewPage(this);
         pageResponse.setNewUser(currentUser);
         pageResponse.setActionOutput(getCurrentMovieAsObjectNode());
         return pageResponse;
     }
 
-    public PageResponse execute(PageQuery pq) {
+    /**
+     * This method executes a feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    public PageResponse execute(final PageQuery pq) {
         if (currentMovie == null) {
             return PageResponse.getErrorPageResponse();
         }
@@ -129,7 +153,12 @@ public final class SeeDetailsPage extends Page {
         };
     }
 
-    public PageResponse afterEnter(PageQuery pq) {
+    /**
+     * This method executes after a given page was just visited.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    public PageResponse afterEnter(final PageQuery pq) {
         // This class does not include an afterEnter method.
         MoviesDB moviesDB = (pq.getMoviesDBSubset() == null) ? pq.getMoviesDB()
                 : pq.getMoviesDBSubset();

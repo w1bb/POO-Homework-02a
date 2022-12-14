@@ -4,19 +4,19 @@ import execution.pages.Page;
 import execution.pages.PageFactory;
 import execution.pages.PageQuery;
 import execution.pages.PageResponse;
-import execution.users.User;
-import fileio.ActionsInput;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-public class LogoutPage extends Page {
+public final class LogoutPage extends Page {
     private static LogoutPage instance = null;
 
     private LogoutPage() {
         super("logout", null);
     }
 
+    /**
+     * This function is used for the singleton design patterns and returns the only (real) instance
+     * of this page.
+     * @return The (only) instance of the page.
+     */
     public static LogoutPage getInstance() {
         if (instance == null) {
             instance = new LogoutPage();
@@ -24,12 +24,22 @@ public class LogoutPage extends Page {
         return instance;
     }
 
-    public PageResponse execute(PageQuery pq) {
+    /**
+     * This method executes a feature on the current page. In this case, nothing happens.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    public PageResponse execute(final PageQuery pq) {
         // This class does not include an execute method.
         return null;
     }
 
-    public PageResponse afterEnter(PageQuery pq) {
+    /**
+     * This method executes after a given page was just visited.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    public PageResponse afterEnter(final PageQuery pq) {
         PageResponse resultPageResponse = new PageResponse();
         resultPageResponse.setNewPage(PageFactory.getPage("unauth-homepage"));
         return resultPageResponse;

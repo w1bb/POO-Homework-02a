@@ -1,19 +1,16 @@
 package execution.pages.auth;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import execution.movies.Movie;
 import execution.movies.MoviesDB;
 import execution.pages.Page;
-import execution.pages.PageFactory;
 import execution.pages.PageQuery;
 import execution.pages.PageResponse;
-import execution.users.User;
 import fileio.ActionsInput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MoviesPage extends Page {
+public final class MoviesPage extends Page {
     private static MoviesPage instance = null;
 
     private MoviesPage() {
@@ -25,6 +22,11 @@ public class MoviesPage extends Page {
                         "logout")));
     }
 
+    /**
+     * This function is used for the singleton design patterns and returns the only (real) instance
+     * of this page.
+     * @return The (only) instance of the page.
+     */
     public static MoviesPage getInstance() {
         if (instance == null) {
             instance = new MoviesPage();
@@ -32,7 +34,12 @@ public class MoviesPage extends Page {
         return instance;
     }
 
-    private PageResponse executeSearch(PageQuery pq) {
+    /**
+     * This method executes the "search" feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    private PageResponse executeSearch(final PageQuery pq) {
         PageResponse pageResponse = new PageResponse();
         ObjectNode objectNode = objectMapper.createObjectNode();
         MoviesDB curatedList = pq.getMoviesDB().search(
@@ -44,7 +51,12 @@ public class MoviesPage extends Page {
         return pageResponse;
     }
 
-    private PageResponse executeFilter(PageQuery pq) {
+    /**
+     * This method executes the "filter" feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    private PageResponse executeFilter(final PageQuery pq) {
         PageResponse pageResponse = new PageResponse();
         ActionsInput actionsInput = pq.getCurrentActionsInput();
 
@@ -82,15 +94,16 @@ public class MoviesPage extends Page {
         pageResponse.setNewUser(pq.getCurrentUser());
         pageResponse.setActionOutput(objectNode);
 
-//        if (pq.getCurrentActionsInput().getFilters().getContains().getActors().contains("Camey Ingold")) {
-//            System.out.println("Yeah, this is it!");
-//        }
-
         pageResponse.setMoviesDBSubset(curatedList);
         return pageResponse;
     }
 
-    public PageResponse execute(PageQuery pq) {
+    /**
+     * This method executes a feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    public PageResponse execute(final PageQuery pq) {
         return switch (pq.getCurrentActionsInput().getFeature()) {
             case "search" -> executeSearch(pq);
             case "filter" -> executeFilter(pq);
@@ -98,7 +111,12 @@ public class MoviesPage extends Page {
         };
     }
 
-    public PageResponse afterEnter(PageQuery pq) {
+    /**
+     * This method executes after a given page was just visited.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    public PageResponse afterEnter(final PageQuery pq) {
         PageResponse pageResponse = new PageResponse();
         ObjectNode objectNode = objectMapper.createObjectNode();
         MoviesDB curatedList = pq.getMoviesDB().search("", pq.getCurrentUser());

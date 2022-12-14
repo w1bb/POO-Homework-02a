@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class Movie {
+    public static final int MINIMUM_RATING = 1;
+    public static final int MAXIMUM_RATING = 5;
     private static final int GENERAL_COST = 2;
     private final String name;
     private final int year;

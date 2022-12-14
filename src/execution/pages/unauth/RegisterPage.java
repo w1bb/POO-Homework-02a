@@ -1,13 +1,11 @@
 package execution.pages.unauth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import execution.pages.Page;
 import execution.pages.PageFactory;
 import execution.pages.PageQuery;
 import execution.pages.PageResponse;
 import execution.users.User;
-import fileio.ActionsInput;
 import fileio.CredentialsInput;
 import fileio.UsersInput;
 
@@ -24,6 +22,11 @@ public final class RegisterPage extends Page {
                         "register")));
     }
 
+    /**
+     * This function is used for the singleton design patterns and returns the only (real) instance
+     * of this page.
+     * @return The (only) instance of the page.
+     */
     public static RegisterPage getInstance() {
         if (instance == null) {
             instance = new RegisterPage();
@@ -31,7 +34,12 @@ public final class RegisterPage extends Page {
         return instance;
     }
 
-    private PageResponse executeRegister(PageQuery pq) {
+    /**
+     * This method executes the "register" feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    private PageResponse executeRegister(final PageQuery pq) {
         CredentialsInput newUserCredentials = pq.getCurrentActionsInput().getCredentials();
         UsersInput newUserInput = new UsersInput();
         newUserInput.setCredentials(newUserCredentials);
@@ -51,12 +59,22 @@ public final class RegisterPage extends Page {
         return pageResponse;
     }
 
-    public PageResponse execute(PageQuery pq) {
-        return pq.getCurrentActionsInput().getFeature().equals("register") ?
-                executeRegister(pq) : PageResponse.getErrorPageResponse();
+    /**
+     * This method executes a feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    public PageResponse execute(final PageQuery pq) {
+        return pq.getCurrentActionsInput().getFeature().equals("register")
+                ? executeRegister(pq) : PageResponse.getErrorPageResponse();
     }
 
-    public PageResponse afterEnter(PageQuery pq) {
+    /**
+     * This method executes after a given page was just visited. In this case, nothing happens.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    public PageResponse afterEnter(final PageQuery pq) {
         // This class does not include an afterEnter method.
         return null;
     }

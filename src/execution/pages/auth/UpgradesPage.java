@@ -4,12 +4,11 @@ import execution.pages.Page;
 import execution.pages.PageQuery;
 import execution.pages.PageResponse;
 import execution.users.User;
-import fileio.ActionsInput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class UpgradesPage extends Page {
+public final class UpgradesPage extends Page {
     private static UpgradesPage instance = null;
 
     private UpgradesPage() {
@@ -20,6 +19,11 @@ public class UpgradesPage extends Page {
                         "logout")));
     }
 
+    /**
+     * This function is used for the singleton design patterns and returns the only (real) instance
+     * of this page.
+     * @return The (only) instance of the page.
+     */
     public static UpgradesPage getInstance() {
         if (instance == null) {
             instance = new UpgradesPage();
@@ -27,15 +31,26 @@ public class UpgradesPage extends Page {
         return instance;
     }
 
-    private PageResponse executeBuyTokens(PageQuery pq) {
+    /**
+     * This method executes the "buy tokens" feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    private PageResponse executeBuyTokens(final PageQuery pq) {
         PageResponse pageResponse = new PageResponse();
         User currentUser = pq.getCurrentUser();
         pageResponse.setNewUser(currentUser);
-        boolean bought = currentUser.buyTokens(Integer.parseInt(pq.getCurrentActionsInput().getCount()));
+        boolean bought = currentUser.buyTokens(
+                Integer.parseInt(pq.getCurrentActionsInput().getCount()));
         return bought ? pageResponse : PageResponse.getErrorPageResponse();
     }
 
-    private PageResponse executeBuyPremiumAccount(PageQuery pq) {
+    /**
+     * This method executes the "buy premium account" feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    private PageResponse executeBuyPremiumAccount(final PageQuery pq) {
         PageResponse pageResponse = new PageResponse();
         User currentUser = pq.getCurrentUser();
         pageResponse.setNewUser(currentUser);
@@ -43,7 +58,12 @@ public class UpgradesPage extends Page {
         return bought ? pageResponse : PageResponse.getErrorPageResponse();
     }
 
-    public PageResponse execute(PageQuery pq) {
+    /**
+     * This method executes a feature on the current page.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    public PageResponse execute(final PageQuery pq) {
         return switch (pq.getCurrentActionsInput().getFeature()) {
             case "buy tokens" -> executeBuyTokens(pq);
             case "buy premium account" -> executeBuyPremiumAccount(pq);
@@ -51,7 +71,12 @@ public class UpgradesPage extends Page {
         };
     }
 
-    public PageResponse afterEnter(PageQuery pq) {
+    /**
+     * This method executes after a given page was just visited. In this case, nothing happens.
+     * @param pq The structure containing relevant information for the current request.
+     * @return A PageResponse object containing useful information about the request.
+     */
+    public PageResponse afterEnter(final PageQuery pq) {
         // This class does not include an afterEnter method.
         return null;
     }
