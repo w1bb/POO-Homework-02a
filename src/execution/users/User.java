@@ -8,25 +8,26 @@ import execution.movies.Movie;
 
 import java.util.ArrayList;
 
-public class User {
+public final class User {
     private static final int BONUS_FREE_MOVIES = 15;
-    private final static int PREMIUM_COST = 10;
+    private static final int PREMIUM_COST = 10;
 
-    protected final String name;
-    protected String password;
-    protected AccountType accountType;
-    protected String country;
-    protected int balance;
+    private final String name;
+    private final String password;
+    private AccountType accountType;
+    private final String country;
+    private int balance;
 
-    protected int tokensCount;
-    protected int numFreePremiumMovies;
+    private int tokensCount;
+    private int numFreePremiumMovies;
 
-    protected ArrayList<Movie> purchasedMovies;
-    protected ArrayList<Movie> watchedMovies;
-    protected ArrayList<Movie> likedMovies;
-    protected ArrayList<Movie> ratedMovies;
+    private ArrayList<Movie> purchasedMovies;
+    private ArrayList<Movie> watchedMovies;
+    private ArrayList<Movie> likedMovies;
+    private ArrayList<Movie> ratedMovies;
 
-    public User(final String name, String password, AccountType accountType, String country, int balance) {
+    public User(final String name, final String password, final AccountType accountType,
+                final String country, final int balance) {
         this.name = name;
         this.password = password;
         this.accountType = accountType;
@@ -46,7 +47,7 @@ public class User {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(final int balance) {
         this.balance = balance;
     }
 
@@ -54,7 +55,7 @@ public class User {
         return tokensCount;
     }
 
-    public void setTokensCount(int tokensCount) {
+    public void setTokensCount(final int tokensCount) {
         this.tokensCount = tokensCount;
     }
 
@@ -62,19 +63,19 @@ public class User {
         return numFreePremiumMovies;
     }
 
-    public void setNumFreePremiumMovies(int numFreePremiumMovies) {
+    public void setNumFreePremiumMovies(final int numFreePremiumMovies) {
         this.numFreePremiumMovies = numFreePremiumMovies;
     }
 
-    public final String getName() {
+    public String getName() {
         return this.name;
     }
 
-    public final String getPassword() {
+    public String getPassword() {
         return this.password;
     }
 
-    public final String getCountry() {
+    public String getCountry() {
         return this.country;
     }
 
@@ -82,11 +83,15 @@ public class User {
         return accountType;
     }
 
-    public void setAccountType(AccountType accountType) {
+    public void setAccountType(final AccountType accountType) {
         this.accountType = accountType;
     }
 
-    public final ObjectNode toObjectNode() {
+    /**
+     * This method converts the current user to an outputable ObjectNode.
+     * @return An ObjectNode containing all the information of a given user.
+     */
+    public ObjectNode toObjectNode() {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode returnNode = objectMapper.createObjectNode();
 
@@ -129,7 +134,7 @@ public class User {
         return purchasedMovies;
     }
 
-    public void setPurchasedMovies(ArrayList<Movie> purchasedMovies) {
+    public void setPurchasedMovies(final ArrayList<Movie> purchasedMovies) {
         this.purchasedMovies = purchasedMovies;
     }
 
@@ -137,7 +142,7 @@ public class User {
         return watchedMovies;
     }
 
-    public void setWatchedMovies(ArrayList<Movie> watchedMovies) {
+    public void setWatchedMovies(final ArrayList<Movie> watchedMovies) {
         this.watchedMovies = watchedMovies;
     }
 
@@ -145,7 +150,7 @@ public class User {
         return likedMovies;
     }
 
-    public void setLikedMovies(ArrayList<Movie> likedMovies) {
+    public void setLikedMovies(final ArrayList<Movie> likedMovies) {
         this.likedMovies = likedMovies;
     }
 
@@ -153,11 +158,16 @@ public class User {
         return ratedMovies;
     }
 
-    public void setRatedMovies(ArrayList<Movie> ratedMovies) {
+    public void setRatedMovies(final ArrayList<Movie> ratedMovies) {
         this.ratedMovies = ratedMovies;
     }
 
-    public boolean buyTokens(int count) {
+    /**
+     * This method facilitates the purchase of tokens based on a user's balance.
+     * @param count The number of tokens to be purchased by a user;
+     * @return true if and only if the purchase went through.
+     */
+    public boolean buyTokens(final int count) {
         if (balance < count) {
             return false;
         }
@@ -166,6 +176,10 @@ public class User {
         return true;
     }
 
+    /**
+     * This method facilitates the purchase of premium based on a user's balance.
+     * @return true if and only if the purchase went through.
+     */
     public boolean buyPremium() {
         if (tokensCount < PREMIUM_COST) {
             return false;

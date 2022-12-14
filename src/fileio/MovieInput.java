@@ -19,7 +19,7 @@ public final class MovieInput {
         return this.name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -27,7 +27,7 @@ public final class MovieInput {
         return this.year;
     }
 
-    public void setYear(int year) {
+    public void setYear(final int year) {
         this.year = year;
     }
 
@@ -35,7 +35,7 @@ public final class MovieInput {
         return this.duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(final int duration) {
         this.duration = duration;
     }
 
@@ -43,7 +43,7 @@ public final class MovieInput {
         return this.genres;
     }
 
-    public void setGenres(ArrayList<String> genre) {
+    public void setGenres(final ArrayList<String> genre) {
         this.genres = genre;
     }
 
@@ -51,7 +51,7 @@ public final class MovieInput {
         return this.actors;
     }
 
-    public void setActors(ArrayList<String> actors) {
+    public void setActors(final ArrayList<String> actors) {
         this.actors = actors;
     }
 
@@ -59,10 +59,14 @@ public final class MovieInput {
         return this.countriesBanned;
     }
 
-    public void setCountriesBanned(ArrayList<String> countriesBanned) {
+    public void setCountriesBanned(final ArrayList<String> countriesBanned) {
         this.countriesBanned = countriesBanned;
     }
 
+    /**
+     * This method converts an input to a real Movie type.
+     * @return The converted type
+     */
     public Movie toMovie() {
         return new Movie(name, year, duration, genres, actors, countriesBanned);
     }

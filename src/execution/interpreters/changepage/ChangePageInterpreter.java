@@ -1,31 +1,26 @@
 package execution.interpreters.changepage;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import execution.interpreters.GeneralInterpreter;
-import execution.movies.MoviesDB;
-import execution.pages.Page;
 import execution.pages.PageFactory;
 import execution.pages.PageQuery;
 import execution.pages.PageResponse;
-import execution.users.User;
-import execution.users.UsersDB;
-import fileio.ActionsInput;
 
-public class ChangePageInterpreter implements GeneralInterpreter {
-    private UsersDB usersDB;
-    private MoviesDB moviesDB;
-    private ObjectMapper objectMapper;
+public final class ChangePageInterpreter implements GeneralInterpreter {
+    private final ObjectMapper objectMapper;
 
-    public ChangePageInterpreter(UsersDB usersDB, MoviesDB moviesDB) {
-        this.usersDB = usersDB;
-        this.moviesDB = moviesDB;
+    public ChangePageInterpreter() {
         objectMapper = new ObjectMapper();
     }
 
+    /**
+     * This method executes a given action.
+     * @param pq The action to be executed, alongside other useful information.
+     * @return A PageResponse containing the information required by the Interpreter.
+     */
     @Override
-    public PageResponse executeAction(PageQuery pq) {
+    public PageResponse executeAction(final PageQuery pq) {
         PageResponse pageResponse = new PageResponse();
         if (pq.getCurrentPage().canVisit(pq.getCurrentActionsInput().getPage())) {
             pageResponse.setNewPage(PageFactory.getPage(pq.getCurrentActionsInput().getPage()));

@@ -18,27 +18,32 @@ import fileio.Input;
 import java.util.ArrayList;
 
 public final class Interpreter implements GeneralInterpreter {
-    private UsersDB usersDB;
-    private MoviesDB moviesDB;
+    private final UsersDB usersDB;
+    private final MoviesDB moviesDB;
 
-    private ArrayList<ActionsInput> allActionsInputs;
+    private final ArrayList<ActionsInput> allActionsInputs;
 
-    private ChangePageInterpreter changePageInterpreter;
+    private final ChangePageInterpreter changePageInterpreter;
 
-    private OnPageInterpreter onPageInterpreter;
+    private final OnPageInterpreter onPageInterpreter;
 
-    public Interpreter(Input input) {
+    public Interpreter(final Input input) {
         this.usersDB = new UsersDB();
         this.moviesDB = new MoviesDB();
         input.getUsers().forEach(usersInput -> usersDB.add(usersInput.toUser()));
         input.getMovies().forEach(movieInput -> moviesDB.add(movieInput.toMovie()));
         allActionsInputs = input.getActions();
 
-        changePageInterpreter = new ChangePageInterpreter(usersDB, moviesDB);
+        changePageInterpreter = new ChangePageInterpreter();
         onPageInterpreter = new OnPageInterpreter();
     }
 
-    public PageResponse executeAction(PageQuery pq) {
+    /**
+     * This method executes a given action.
+     * @param pq The action to be executed, alongside other useful information.
+     * @return A PageResponse containing the information required by the Interpreter.
+     */
+    public PageResponse executeAction(final PageQuery pq) {
         if (pq.getCurrentActionsInput().getType().equals("change page")) {
             return changePageInterpreter.executeAction(pq);
         } else if (pq.getCurrentActionsInput().getType().equals("on page")) {
@@ -48,6 +53,10 @@ public final class Interpreter implements GeneralInterpreter {
         return null;
     }
 
+    /**
+     * This method runs all the actions present in an input file.
+     * @return An outputable ArrayNode.
+     */
     public ArrayNode runActions() {
         User currentUser = null;
         Page currentPage = UnauthHomePage.getInstance();

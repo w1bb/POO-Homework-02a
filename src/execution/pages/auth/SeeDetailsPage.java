@@ -1,6 +1,5 @@
 package execution.pages.auth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import execution.AccountType;
@@ -10,7 +9,6 @@ import execution.pages.Page;
 import execution.pages.PageQuery;
 import execution.pages.PageResponse;
 import execution.users.User;
-import fileio.ActionsInput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,16 +34,13 @@ public final class SeeDetailsPage extends Page {
         return instance;
     }
 
-    private PageResponse executePurchase(PageQuery pq) {
+    private PageResponse executePurchase(final PageQuery pq) {
         // Check if it has already been purchased
         User currentUser = pq.getCurrentUser();
-        if (currentUser.getPurchasedMovies().contains(currentMovie)) {
-//            return PageResponse.getErrorPageResponse();
-            // TODO
-        }
 
         ArrayList<Movie> purchasedMovies = currentUser.getPurchasedMovies();
-        if (currentUser.getNumFreePremiumMovies() > 0 && currentUser.getAccountType() == AccountType.PREMIUM) {
+        if (currentUser.getNumFreePremiumMovies() > 0
+                && currentUser.getAccountType() == AccountType.PREMIUM) {
             // It is already free
             currentUser.setNumFreePremiumMovies(currentUser.getNumFreePremiumMovies() - 1);
             purchasedMovies.add(currentMovie);
@@ -58,7 +53,6 @@ public final class SeeDetailsPage extends Page {
             return PageResponse.getErrorPageResponse();
         }
         PageResponse pageResponse = new PageResponse();
-//        pageResponse.setNewPage(this);
         pageResponse.setNewUser(currentUser);
         pageResponse.setActionOutput(getCurrentMovieAsObjectNode());
         return pageResponse;
@@ -137,8 +131,10 @@ public final class SeeDetailsPage extends Page {
 
     public PageResponse afterEnter(PageQuery pq) {
         // This class does not include an afterEnter method.
-        MoviesDB moviesDB = (pq.getMoviesDBSubset() == null) ? pq.getMoviesDB() : pq.getMoviesDBSubset();
-        currentMovie = moviesDB.searchExact(pq.getCurrentActionsInput().getMovie(), pq.getCurrentUser());
+        MoviesDB moviesDB = (pq.getMoviesDBSubset() == null) ? pq.getMoviesDB()
+                : pq.getMoviesDBSubset();
+        currentMovie = moviesDB.searchExact(pq.getCurrentActionsInput().getMovie(),
+                pq.getCurrentUser());
         if (currentMovie == null) {
             // This should NEVER be reached (?)
             return PageResponse.getErrorPageResponse();

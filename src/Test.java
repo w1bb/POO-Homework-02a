@@ -6,7 +6,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 class Config {
     private String homework;
@@ -95,7 +101,8 @@ public final class Test {
     public static final String OUT_FILE = "results.out";
     private static final File TEST_OUT_FILE = new File(OUT_FILE);
 
-    private static final File CONFIG_FILE = new File(CHECKER_RESOURCES_FOLDER + "config.json");
+    private static final File CONFIG_FILE =
+            new File(CHECKER_RESOURCES_FOLDER + "config.json");
 
     private static final int MAX_MILLISECONDS_PER_TEST = 1000;
 
@@ -110,7 +117,8 @@ public final class Test {
      *
      * @param argv String[]
      */
-    public static void main(final String[] argv) throws IOException, ExecutionException, InterruptedException, TimeoutException {
+    public static void main(final String[] argv)
+            throws IOException, ExecutionException, InterruptedException, TimeoutException {
         runTests();
         preTestCleanUp();
         System.exit(0);
@@ -128,7 +136,8 @@ public final class Test {
 //        return null;
     }
 
-    private static void runTests() throws IOException, ExecutionException, InterruptedException, TimeoutException {
+    private static void runTests()
+            throws IOException, ExecutionException, InterruptedException, TimeoutException {
         Config config = loadConfig();
         totalScore = config.getCheckstyleScore();
         int manualScore = config.getReadmeScore() + config.getHomeworkDesignScore();
@@ -144,7 +153,7 @@ public final class Test {
             runTest(testFileName, config, future);
         }
 
-        score += Checkstyle.testCheckstyle() ? 10 : 0;
+        score += Checkstyle.testCheckstyle();
         System.out.println("Total score: .......................... " + score + "/" + totalScore);
         System.out.println("Up to "
                 + manualScore

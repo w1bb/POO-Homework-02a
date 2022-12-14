@@ -4,10 +4,15 @@ import execution.interpreters.GeneralInterpreter;
 import execution.pages.PageQuery;
 import execution.pages.PageResponse;
 
-public class OnPageInterpreter implements GeneralInterpreter {
+public final class OnPageInterpreter implements GeneralInterpreter {
 
+    /**
+     * This method executes a given action.
+     * @param pq The action to be executed, alongside other useful information.
+     * @return A PageResponse containing the information required by the Interpreter.
+     */
     @Override
-    public PageResponse executeAction(PageQuery pq) {
+    public PageResponse executeAction(final PageQuery pq) {
         return pq.getCurrentPage().execute(pq);
     }
 }

@@ -2,16 +2,14 @@ package execution.movies;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import execution.ErrorType;
 import execution.users.User;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class Movie {
-    private final static int GENERAL_COST = 2;
+    private static final int GENERAL_COST = 2;
     private final String name;
     private final int year;
     private final int duration;
@@ -19,10 +17,10 @@ public final class Movie {
     private final ArrayList<String> actors;
     private final ArrayList<String> countriesBanned;
 
-    private ArrayList<User> watched;
-    private ArrayList<User> likes;
-    private ArrayList<User> dislikes;
-    private HashMap<User, Integer> ratings;
+    private final ArrayList<User> watched;
+    private final ArrayList<User> likes;
+    private final ArrayList<User> dislikes;
+    private final HashMap<User, Integer> ratings;
     private final int tokensCost;
 
     public Movie(final String name, final int year, final int duration,
@@ -45,33 +43,12 @@ public final class Movie {
         return this.name;
     }
 
-    public boolean containsYear(int year) {
-        return this.year == year;
-    }
-
-    public boolean containsDuration(int duration) {
-        return this.duration == duration;
-    }
-
-    public boolean containsGenre(ArrayList<String> genreSearch) {
-        for (String genreName : genreSearch) {
-            if (!this.genres.contains(genreName)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean containsActors(ArrayList<String> actorsSearch) {
-        for (String actorName : actorsSearch) {
-            if (!this.actors.contains(actorName)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean isBannedForUser(User user) {
+    /**
+     * This method checks if a given movie can be watched by a user based on its country.
+     * @param user The user to check with.
+     * @return true if and only if the movie can be watched by a given user.
+     */
+    public boolean isBannedForUser(final User user) {
         return this.countriesBanned.contains(user.getCountry());
     }
 
@@ -91,47 +68,77 @@ public final class Movie {
         return tokensCost;
     }
 
-    public void watch(User user) {
+    /**
+     * This method "watches" a movie for a given user.
+     * @param user The user to watch the movie for.
+     */
+    public void watch(final User user) {
         if (!user.getWatchedMovies().contains(this)) {
             user.getWatchedMovies().add(this);
             watched.add(user);
         }
     }
 
-    public ErrorType like(User user) {
+    /**
+     * This method "likes" a movie for a given user.
+     * @param user The user to like the movie for.
+     */
+    public void like(final User user) {
         if (!watched.contains(user)) {
-            return ErrorType.ERROR_USER_NOT_WATCH_MOVIE;
+            return;
         }
         dislikes.remove(user);
         if (!likes.contains(user)) {
             likes.add(user);
         }
-        return ErrorType.NO_ERROR;
     }
 
-    public ErrorType dislike(User user) {
+    /**
+     * This method "dislikes" a movie for a given user. Currently, this function is not used, but
+     * future functionality may be implemented later on.
+     * @param user The user to dislike the movie for.
+     */
+    public void dislike(final User user) {
         if (!watched.contains(user)) {
-            return ErrorType.ERROR_USER_NOT_WATCH_MOVIE;
+            return;
         }
         likes.remove(user);
         if (!dislikes.contains(user)) {
             dislikes.add(user);
         }
-        return ErrorType.NO_ERROR;
     }
 
+    /**
+     * This method returns the current number of likes. Currently, this function is not used, but
+     * future functionality may be implemented later on.
+     * @return The number of likes for a given movie.
+     */
     public int getLikeCount() {
         return likes.size();
     }
 
+    /**
+     * This method returns the current number of dislikes. Currently, this function is not used, but
+     * future functionality may be implemented later on.
+     * @return The number of dislikes for a given movie.
+     */
     public int getDislikeCount() {
         return dislikes.size();
     }
 
-    public void rate(User user, int rating) {
+    /**
+     * This method "rates" a movie for a given user.
+     * @param user The user to rate a movie for.
+     * @param rating The rating (expected <= 5)
+     */
+    public void rate(final User user, final int rating) {
         ratings.put(user, rating);
     }
 
+    /**
+     * This method computes a movie's rating as the mean value of all the ratings.
+     * @return The movie's rating.
+     */
     public double computeRating() {
         double rating = 0;
         for (Map.Entry<User, Integer> x : ratings.entrySet()) {
@@ -144,7 +151,12 @@ public final class Movie {
         return duration;
     }
 
+    /**
+     * This method creates an ObjectNode containing all the information present in a given movie.
+     * @return An outputable ObjectNode.
+     */
     public ObjectNode toObjectNode() {
+        final double digitsPow = 100.0;
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode returnNode = objectMapper.createObjectNode();
         returnNode.put("name", name);
@@ -154,7 +166,7 @@ public final class Movie {
         returnNode.set("actors", objectMapper.valueToTree(actors));
         returnNode.set("countriesBanned", objectMapper.valueToTree(countriesBanned));
         returnNode.put("numLikes", likes.size());
-        double computedRating = (double) Math.round(computeRating() * 100.0) / 100.0;
+        double computedRating = (double) Math.round(computeRating() * digitsPow) / digitsPow;
         returnNode.put("rating", computedRating);
         returnNode.put("numRatings", ratings.size());
         return returnNode;
@@ -162,18 +174,17 @@ public final class Movie {
 
     @Override
     public String toString() {
-        return "Movie{" +
-                "name='" + name + '\'' +
-                ", year=" + year +
-                ", duration=" + duration +
-                ", genres=" + genres +
-                ", actors=" + actors +
-                ", countriesBanned=" + countriesBanned +
-                ", watched=" + watched +
-                ", likes=" + likes +
-                ", dislikes=" + dislikes +
-                ", ratings=" + ratings +
-                ", tokensCost=" + tokensCost +
-                '}';
+        return "Movie{"
+                + "name='" + name + '\''
+                + ", year=" + year
+                + ", duration=" + duration
+                + ", genres=" + genres
+                + ", actors=" + actors
+                + ", countriesBanned=" + countriesBanned
+                + ", watched=" + watched
+                + ", likes=" + likes
+                + ", dislikes=" + dislikes
+                + ", ratings=" + ratings
+                + ", tokensCost=" + tokensCost + '}';
     }
 }

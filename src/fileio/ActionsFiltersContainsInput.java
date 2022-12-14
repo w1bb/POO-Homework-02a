@@ -13,7 +13,7 @@ public final class ActionsFiltersContainsInput {
         return this.actors;
     }
 
-    public void setActors(ArrayList<String> actors) {
+    public void setActors(final ArrayList<String> actors) {
         this.actors = actors;
     }
 
@@ -21,7 +21,7 @@ public final class ActionsFiltersContainsInput {
         return this.genre;
     }
 
-    public void setGenre(ArrayList<String> genre) {
+    public void setGenre(final ArrayList<String> genre) {
         this.genre = genre;
     }
 }

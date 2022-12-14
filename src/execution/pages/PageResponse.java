@@ -11,7 +11,7 @@ public final class PageResponse {
     private ObjectNode actionOutput;
     private MoviesDB moviesDBSubset;
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public PageResponse() {
         this.newPage = null;
@@ -24,7 +24,7 @@ public final class PageResponse {
         return newPage;
     }
 
-    public void setNewPage(Page newPage) {
+    public void setNewPage(final Page newPage) {
         this.newPage = newPage;
     }
 
@@ -32,7 +32,7 @@ public final class PageResponse {
         return newUser;
     }
 
-    public void setNewUser(User newUser) {
+    public void setNewUser(final User newUser) {
         this.newUser = newUser;
     }
 
@@ -40,7 +40,7 @@ public final class PageResponse {
         return actionOutput;
     }
 
-    public void setActionOutput(ObjectNode actionOutput) {
+    public void setActionOutput(final ObjectNode actionOutput) {
         this.actionOutput = actionOutput;
     }
 
@@ -48,13 +48,17 @@ public final class PageResponse {
         return moviesDBSubset;
     }
 
-    public void setMoviesDBSubset(MoviesDB moviesDBSubset) {
+    public void setMoviesDBSubset(final MoviesDB moviesDBSubset) {
         this.moviesDBSubset = moviesDBSubset;
     }
 
+    /**
+     * This method creates a new PageResponse which only contains the error field.
+     * @return The error PageResponse.
+     */
     public static PageResponse getErrorPageResponse() {
         PageResponse pageResponse = new PageResponse();
-        ObjectNode objectNode = objectMapper.createObjectNode();
+        ObjectNode objectNode = OBJECT_MAPPER.createObjectNode();
         objectNode.put("error", "Error");
         pageResponse.actionOutput = objectNode;
         return pageResponse;
@@ -62,10 +66,9 @@ public final class PageResponse {
 
     @Override
     public String toString() {
-        return "PageResponse{" +
-                "newPage=" + newPage +
-                ", newUser=" + newUser +
-                ", actionOutput=" + actionOutput +
-                '}';
+        return "PageResponse{"
+                + "newPage=" + newPage
+                + ", newUser=" + newUser
+                + ", actionOutput=" + actionOutput + '}';
     }
 }

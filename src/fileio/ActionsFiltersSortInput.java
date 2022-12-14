@@ -13,7 +13,7 @@ public final class ActionsFiltersSortInput {
         return this.rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(final String rating) {
         this.rating = rating;
     }
 
@@ -21,7 +21,7 @@ public final class ActionsFiltersSortInput {
         return this.duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(final String duration) {
         this.duration = duration;
     }
 }

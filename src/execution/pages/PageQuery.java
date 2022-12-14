@@ -5,8 +5,6 @@ import execution.users.User;
 import execution.users.UsersDB;
 import fileio.ActionsInput;
 
-import javax.swing.*;
-
 public final class PageQuery {
     private PageResponse oldPageResponse;
     private Page currentPage;
@@ -23,7 +21,7 @@ public final class PageQuery {
         return oldPageResponse;
     }
 
-    public void setOldPageResponse(PageResponse oldPageResponse) {
+    public void setOldPageResponse(final PageResponse oldPageResponse) {
         this.oldPageResponse = oldPageResponse;
     }
 
@@ -31,7 +29,7 @@ public final class PageQuery {
         return currentPage;
     }
 
-    public void setCurrentPage(Page currentPage) {
+    public void setCurrentPage(final Page currentPage) {
         this.currentPage = currentPage;
     }
 
@@ -39,7 +37,7 @@ public final class PageQuery {
         return currentUser;
     }
 
-    public void setCurrentUser(User currentUser) {
+    public void setCurrentUser(final User currentUser) {
         this.currentUser = currentUser;
     }
 
@@ -47,7 +45,7 @@ public final class PageQuery {
         return currentActionsInput;
     }
 
-    public void setCurrentActionsInput(ActionsInput currentActionsInput) {
+    public void setCurrentActionsInput(final ActionsInput currentActionsInput) {
         this.currentActionsInput = currentActionsInput;
     }
 
@@ -55,7 +53,7 @@ public final class PageQuery {
         return usersDB;
     }
 
-    public void setUsersDB(UsersDB usersDB) {
+    public void setUsersDB(final UsersDB usersDB) {
         this.usersDB = usersDB;
     }
 
@@ -63,7 +61,7 @@ public final class PageQuery {
         return moviesDB;
     }
 
-    public void setMoviesDB(MoviesDB moviesDB) {
+    public void setMoviesDB(final MoviesDB moviesDB) {
         this.moviesDB = moviesDB;
     }
 
@@ -71,19 +69,18 @@ public final class PageQuery {
         return moviesDBSubset;
     }
 
-    public void setMoviesDBSubset(MoviesDB moviesDBSubset) {
+    public void setMoviesDBSubset(final MoviesDB moviesDBSubset) {
         this.moviesDBSubset = moviesDBSubset;
     }
 
     @Override
     public String toString() {
-        return "PageQuery{" +
-                "oldPageResponse=" + oldPageResponse +
-                ", currentPage=" + currentPage +
-                ", currentUser=" + currentUser +
-                ", currentActionsInput=" + currentActionsInput +
-                ", usersDB=" + usersDB +
-                ", moviesDB=" + moviesDB +
-                '}';
+        return "PageQuery{"
+                + "oldPageResponse=" + oldPageResponse
+                +  ", currentPage=" + currentPage
+                + ", currentUser=" + currentUser
+                + ", currentActionsInput=" + currentActionsInput
+                + ", usersDB=" + usersDB
+                + ", moviesDB=" + moviesDB + '}';
     }
 }

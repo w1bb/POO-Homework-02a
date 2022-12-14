@@ -14,7 +14,7 @@ public final class Input {
         return this.users;
     }
 
-    public void setUsers(ArrayList<UsersInput> users) {
+    public void setUsers(final ArrayList<UsersInput> users) {
         this.users = users;
     }
 
@@ -22,7 +22,7 @@ public final class Input {
         return this.movies;
     }
 
-    public void setMovies(ArrayList<MovieInput> movies) {
+    public void setMovies(final ArrayList<MovieInput> movies) {
         this.movies = movies;
     }
 
@@ -30,7 +30,7 @@ public final class Input {
         return this.actions;
     }
 
-    public void setActions(ArrayList<ActionsInput> actions) {
+    public void setActions(final ArrayList<ActionsInput> actions) {
         this.actions = actions;
     }
 }

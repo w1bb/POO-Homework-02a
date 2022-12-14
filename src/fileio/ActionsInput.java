@@ -1,6 +1,6 @@
 package fileio;
 
-public class ActionsInput {
+public final class ActionsInput {
     private String count;
     private int rate;
     private String type;
@@ -19,7 +19,7 @@ public class ActionsInput {
         return this.count;
     }
 
-    public void setCount(String count) {
+    public void setCount(final String count) {
         this.count = count;
     }
 
@@ -27,7 +27,7 @@ public class ActionsInput {
         return this.rate;
     }
 
-    public void setRate(int rate) {
+    public void setRate(final int rate) {
         this.rate = rate;
     }
 
@@ -35,7 +35,7 @@ public class ActionsInput {
         return this.type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -43,7 +43,7 @@ public class ActionsInput {
         return this.page;
     }
 
-    public void setPage(String page) {
+    public void setPage(final String page) {
         this.page = page;
     }
 
@@ -51,7 +51,7 @@ public class ActionsInput {
         return this.feature;
     }
 
-    public void setFeature(String feature) {
+    public void setFeature(final String feature) {
         this.feature = feature;
     }
 
@@ -59,7 +59,7 @@ public class ActionsInput {
         return this.startsWith;
     }
 
-    public void setStartsWith(String startsWith) {
+    public void setStartsWith(final String startsWith) {
         this.startsWith = startsWith;
     }
 
@@ -67,7 +67,7 @@ public class ActionsInput {
         return this.movie;
     }
 
-    public void setMovie(String movie) {
+    public void setMovie(final String movie) {
         this.movie = movie;
     }
 
@@ -75,7 +75,7 @@ public class ActionsInput {
         return this.objectType;
     }
 
-    public void setObjectType(String objectType) {
+    public void setObjectType(final String objectType) {
         this.objectType = objectType;
     }
 
@@ -83,7 +83,7 @@ public class ActionsInput {
         return this.credentialsInput;
     }
 
-    public void setCredentials(CredentialsInput credentials) {
+    public void setCredentials(final CredentialsInput credentials) {
         this.credentialsInput = credentials;
     }
 
@@ -91,23 +91,22 @@ public class ActionsInput {
         return this.filtersInput;
     }
 
-    public void setFilters(ActionsFiltersInput filters) {
+    public void setFilters(final ActionsFiltersInput filters) {
         this.filtersInput = filters;
     }
 
     @Override
     public String toString() {
-        return "ActionsInput{" +
-                "count=" + count +
-                ", rate=" + rate +
-                ", type='" + type + '\'' +
-                ", page='" + page + '\'' +
-                ", feature='" + feature + '\'' +
-                ", startsWith='" + startsWith + '\'' +
-                ", movie='" + movie + '\'' +
-                ", objectType='" + objectType + '\'' +
-                ", credentialsInput=" + credentialsInput +
-                ", filtersInput=" + filtersInput +
-                '}';
+        return "ActionsInput{"
+                + "count=" + count
+                + ", rate=" + rate
+                + ", type='" + type + '\''
+                + ", page='" + page + '\''
+                + ", feature='" + feature + '\''
+                + ", startsWith='" + startsWith + '\''
+                + ", movie='" + movie + '\''
+                + ", objectType='" + objectType + '\''
+                + ", credentialsInput=" + credentialsInput
+                + ", filtersInput=" + filtersInput +  '}';
     }
 }

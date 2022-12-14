@@ -3,7 +3,7 @@ package fileio;
 import execution.AccountType;
 import execution.users.User;
 
-public class UsersInput {
+public final class UsersInput {
     private CredentialsInput credentialsInput;
 
     public UsersInput() {
@@ -13,10 +13,14 @@ public class UsersInput {
         return credentialsInput;
     }
 
-    public void setCredentials(CredentialsInput credentials) {
+    public void setCredentials(final CredentialsInput credentials) {
         this.credentialsInput = credentials;
     }
 
+    /**
+     * This method converts a UsersInput to a real User.
+     * @return The converted value
+     */
     public User toUser() {
         return switch (credentialsInput.getAccountType()) {
             case "standard" ->

@@ -13,10 +13,22 @@ public final class MoviesDB {
         movies = new ArrayList<>();
     }
 
-    public void add(Movie movie) {
+    /**
+     * This method adds a given movie to the database.
+     * @param movie The movie to be added to the database.
+     */
+    public void add(final Movie movie) {
         movies.add(movie);
     }
 
+    /**
+     * This method searches for a movie that starts with a given name and is available for a given
+     * user.
+     * @param startsWith The String representing the beginning of a valid movie;
+     * @param forUser The user for whom the search is completed.
+     * @return A movie that starts with startsWith and can be viewed by the given user or null in
+     * case such a movie does not exist.
+     */
     public MoviesDB search(final String startsWith,
                            final User forUser) {
         MoviesDB moviesDB = new MoviesDB();
@@ -29,7 +41,13 @@ public final class MoviesDB {
         return moviesDB;
     }
 
-    public Movie searchExact(final String movieName, User forUser) {
+    /**
+     * This method searches for an exact movie name.
+     * @param movieName The name of the movie to be searched;
+     * @param forUser The user for whom the search is to be completed.
+     * @return A movie if the specified name exists in the database or null otherwise.
+     */
+    public Movie searchExact(final String movieName, final User forUser) {
         for (Movie movie : movies) {
             if (movie.getName().equals(movieName)) {
                 return movie.isBannedForUser(forUser) ? null : movie;
@@ -38,6 +56,14 @@ public final class MoviesDB {
         return null;
     }
 
+    /**
+     * This method sorts in-place the database based on some criteria.
+     * @param sortRatingAscending true/false if the output should be sorted in ascending/descending
+     *                            order based on the movies' ratings or none otherwise;
+     * @param sortDurationAscending true/false if the output should be sorted in
+     *                              ascending/descending order based on the movies' durations or
+     *                              none otherwise.
+     */
     private void selfSort(final Boolean sortRatingAscending, final Boolean sortDurationAscending) {
         movies.sort((a, b) -> {
             if (sortDurationAscending != null) {
@@ -57,6 +83,18 @@ public final class MoviesDB {
         });
     }
 
+    /**
+     * This method creates a copy of a database and then filters (and sorts) it.
+     * @param sortRatingAscending true/false if the output should be sorted in ascending/descending
+     *                            order based on the movies' ratings or none otherwise;
+     * @param sortDurationAscending true/false if the output should be sorted in
+     *                              ascending/descending order based on the movies' durations or
+     *                              none otherwise;
+     * @param actors If specified, these are the filtered (required) actors;
+     * @param genres If specified, these are the filtered (required) genres
+     * @param forUser The user for whom the filtering is done.
+     * @return A curated movies database.
+     */
     public MoviesDB filter(final Boolean sortRatingAscending, final Boolean sortDurationAscending,
                            final ArrayList<String> actors, final ArrayList<String> genres,
                            final User forUser) {
@@ -98,6 +136,10 @@ public final class MoviesDB {
         return filteredDB;
     }
 
+    /**
+     * This method converts the database into an ArrayNode of information.
+     * @return An outputable ArrayNode.
+     */
     public ArrayNode toArrayNode() {
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayNode returnNode = objectMapper.createArrayNode();

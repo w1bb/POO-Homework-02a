@@ -1,8 +1,8 @@
 package fileio;
 
 public final class ActionsFiltersInput {
-    ActionsFiltersSortInput sort;
-    ActionsFiltersContainsInput contains;
+    private ActionsFiltersSortInput sort;
+    private ActionsFiltersContainsInput contains;
 
     public ActionsFiltersInput() {
     }
@@ -11,7 +11,7 @@ public final class ActionsFiltersInput {
         return this.sort;
     }
 
-    public void setSort(ActionsFiltersSortInput sort) {
+    public void setSort(final ActionsFiltersSortInput sort) {
         this.sort = sort;
     }
 
@@ -19,7 +19,7 @@ public final class ActionsFiltersInput {
         return this.contains;
     }
 
-    public void setContains(ActionsFiltersContainsInput contains) {
+    public void setContains(final ActionsFiltersContainsInput contains) {
         this.contains = contains;
     }
 }
