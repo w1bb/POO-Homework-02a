@@ -71,7 +71,6 @@ public final class Interpreter implements GeneralInterpreter {
             pq.setCurrentActionsInput(actionsInput);
             pq.setCurrentPage(currentPage);
             pq.setCurrentUser(currentUser);
-//            System.out.println(pq.toString());
             PageResponse pageResponse = executeAction(pq);
             if (pageResponse == null) {
                 ObjectNode objectNode = objectMapper.createObjectNode();
@@ -85,7 +84,6 @@ public final class Interpreter implements GeneralInterpreter {
             Page originalCurrentPage = currentPage;
             pq.setMoviesDBSubset(pageResponse.getMoviesDBSubset());
             while (pageResponse != null) {
-//                System.out.println(pageResponse.toString());
                 if (pageResponse.getActionOutput() != null) {
                     ObjectNode objectNode = pageResponse.getActionOutput();
                     if (!objectNode.has("error")) {
@@ -102,15 +100,13 @@ public final class Interpreter implements GeneralInterpreter {
                         objectNode.set("currentMoviesList", objectMapper.createArrayNode());
                     }
                     if (!objectNode.has("currentUser")) {
+                        assert currentUser != null;
                         objectNode.set("currentUser", currentUser.toObjectNode());
                     }
                     returnNode.add(objectNode);
                 }
                 currentUser = pageResponse.getNewUser();
                 pq.setCurrentUser(currentUser);
-//                if (currentUser != null) {
-//                    System.out.println(currentUser);
-//                }
                 if (pageResponse.getNewPage() == null) {
                     break;
                 }
@@ -118,7 +114,6 @@ public final class Interpreter implements GeneralInterpreter {
                 pq.setCurrentPage(currentPage);
                 pageResponse = currentPage.afterEnter(pq);
             }
-//            System.out.println("===");
         }
         return returnNode;
     }

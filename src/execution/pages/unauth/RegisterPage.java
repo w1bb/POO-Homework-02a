@@ -51,8 +51,8 @@ public final class RegisterPage extends Page {
         // Add new user and change current user
         pq.getUsersDB().add(newUser);
         PageResponse pageResponse = new PageResponse();
-        pageResponse.setNewPage(PageFactory.getPage("auth-homepage"));
         pageResponse.setNewUser(newUser);
+        pageResponse.setNewPage(PageFactory.getPage("auth-homepage"));
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.set("currentUser", newUser.toObjectNode());
         pageResponse.setActionOutput(objectNode);

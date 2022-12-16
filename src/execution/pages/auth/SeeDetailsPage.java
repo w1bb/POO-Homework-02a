@@ -78,12 +78,8 @@ public final class SeeDetailsPage extends Page {
         if (!currentUser.getPurchasedMovies().contains(currentMovie)) {
             return PageResponse.getErrorPageResponse();
         }
-//        if (currentUser.getWatchedMovies().contains(currentMovie)) {
-//            return PageResponse.getErrorPageResponse();
-//        }
         currentMovie.watch(currentUser);
         PageResponse pageResponse = new PageResponse();
-//        pageResponse.setNewPage(this);
         pageResponse.setNewUser(currentUser);
         pageResponse.setActionOutput(getCurrentMovieAsObjectNode());
         return pageResponse;

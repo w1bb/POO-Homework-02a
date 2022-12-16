@@ -3,7 +3,7 @@ package execution.users;
 import java.util.ArrayList;
 
 public final class UsersDB {
-    private ArrayList<User> users;
+    private final ArrayList<User> users;
 
     public UsersDB() {
         users = new ArrayList<>();

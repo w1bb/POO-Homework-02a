@@ -6,7 +6,6 @@ import execution.users.UsersDB;
 import fileio.ActionsInput;
 
 public final class PageQuery {
-    private PageResponse oldPageResponse;
     private Page currentPage;
     private User currentUser;
     private ActionsInput currentActionsInput;
@@ -15,14 +14,6 @@ public final class PageQuery {
     private MoviesDB moviesDBSubset;
 
     public PageQuery() {
-    }
-
-    public PageResponse getOldPageResponse() {
-        return oldPageResponse;
-    }
-
-    public void setOldPageResponse(final PageResponse oldPageResponse) {
-        this.oldPageResponse = oldPageResponse;
     }
 
     public Page getCurrentPage() {
@@ -76,8 +67,7 @@ public final class PageQuery {
     @Override
     public String toString() {
         return "PageQuery{"
-                + "oldPageResponse=" + oldPageResponse
-                +  ", currentPage=" + currentPage
+                +  "currentPage=" + currentPage
                 + ", currentUser=" + currentUser
                 + ", currentActionsInput=" + currentActionsInput
                 + ", usersDB=" + usersDB
