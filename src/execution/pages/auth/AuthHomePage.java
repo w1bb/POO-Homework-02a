@@ -36,7 +36,7 @@ public final class AuthHomePage extends Page {
      * @return A PageResponse object containing useful information about the request.
      */
     public PageResponse execute(final PageQuery pq) {
-        return PageResponse.getErrorPageResponse();
+        return PageResponse.Builder.createError();
     }
 
     /**

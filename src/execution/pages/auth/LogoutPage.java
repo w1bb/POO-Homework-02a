@@ -40,8 +40,7 @@ public final class LogoutPage extends Page {
      * @return A PageResponse object containing useful information about the request.
      */
     public PageResponse afterEnter(final PageQuery pq) {
-        PageResponse resultPageResponse = new PageResponse();
-        resultPageResponse.setNewPage(PageFactory.getPage("unauth-homepage"));
-        return resultPageResponse;
+        PageResponse.Builder builder = new PageResponse.Builder();
+        return builder.newPage(PageFactory.getPage("unauth-homepage")).build();
     }
 }

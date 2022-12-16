@@ -40,15 +40,15 @@ public final class MoviesPage extends Page {
      * @return A PageResponse object containing useful information about the request.
      */
     private PageResponse executeSearch(final PageQuery pq) {
-        PageResponse pageResponse = new PageResponse();
+        PageResponse.Builder builder = new PageResponse.Builder();
         ObjectNode objectNode = objectMapper.createObjectNode();
         MoviesDB curatedList = pq.getMoviesDB().search(
                 pq.getCurrentActionsInput().getStartsWith(), pq.getCurrentUser());
         objectNode.set("currentMoviesList", curatedList.toArrayNode());
-        pageResponse.setNewUser(pq.getCurrentUser());
-        pageResponse.setActionOutput(objectNode);
-        pageResponse.setMoviesDBSubset(curatedList);
-        return pageResponse;
+        return builder.newUser(pq.getCurrentUser())
+                .actionOutput(objectNode)
+                .moviesDBSubset(curatedList)
+                .build();
     }
 
     /**
@@ -57,7 +57,7 @@ public final class MoviesPage extends Page {
      * @return A PageResponse object containing useful information about the request.
      */
     private PageResponse executeFilter(final PageQuery pq) {
-        PageResponse pageResponse = new PageResponse();
+        PageResponse.Builder builder = new PageResponse.Builder();
         ActionsInput actionsInput = pq.getCurrentActionsInput();
 
         Boolean sortRatingAscending = null;
@@ -91,11 +91,10 @@ public final class MoviesPage extends Page {
 
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.set("currentMoviesList", curatedList.toArrayNode());
-        pageResponse.setNewUser(pq.getCurrentUser());
-        pageResponse.setActionOutput(objectNode);
-
-        pageResponse.setMoviesDBSubset(curatedList);
-        return pageResponse;
+        return builder.newUser(pq.getCurrentUser())
+                .actionOutput(objectNode)
+                .moviesDBSubset(curatedList)
+                .build();
     }
 
     /**
@@ -117,13 +116,13 @@ public final class MoviesPage extends Page {
      * @return A PageResponse object containing useful information about the request.
      */
     public PageResponse afterEnter(final PageQuery pq) {
-        PageResponse pageResponse = new PageResponse();
+        PageResponse.Builder builder = new PageResponse.Builder();
         ObjectNode objectNode = objectMapper.createObjectNode();
         MoviesDB curatedList = pq.getMoviesDB().search("", pq.getCurrentUser());
         objectNode.set("currentMoviesList", curatedList.toArrayNode());
-        pageResponse.setNewUser(pq.getCurrentUser());
-        pageResponse.setActionOutput(objectNode);
-        pageResponse.setMoviesDBSubset(curatedList);
-        return pageResponse;
+        return builder.newUser(pq.getCurrentUser())
+                .actionOutput(objectNode)
+                .moviesDBSubset(curatedList)
+                .build();
     }
 }

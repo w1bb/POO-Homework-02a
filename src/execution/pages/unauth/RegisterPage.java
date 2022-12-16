@@ -45,18 +45,18 @@ public final class RegisterPage extends Page {
         newUserInput.setCredentials(newUserCredentials);
         User newUser = newUserInput.toUser();
         if (pq.getUsersDB().checkName(newUser.getName())) {
-            return PageResponse.getErrorPageResponse();
+            return PageResponse.Builder.createError();
         }
 
         // Add new user and change current user
         pq.getUsersDB().add(newUser);
-        PageResponse pageResponse = new PageResponse();
-        pageResponse.setNewUser(newUser);
-        pageResponse.setNewPage(PageFactory.getPage("auth-homepage"));
+        PageResponse.Builder builder = new PageResponse.Builder();
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.set("currentUser", newUser.toObjectNode());
-        pageResponse.setActionOutput(objectNode);
-        return pageResponse;
+
+        return builder.newUser(newUser)
+                .newPage(PageFactory.getPage("auth-homepage"))
+                .actionOutput(objectNode).build();
     }
 
     /**
@@ -66,7 +66,7 @@ public final class RegisterPage extends Page {
      */
     public PageResponse execute(final PageQuery pq) {
         return pq.getCurrentActionsInput().getFeature().equals("register")
-                ? executeRegister(pq) : PageResponse.getErrorPageResponse();
+                ? executeRegister(pq) : PageResponse.Builder.createError();
     }
 
     /**

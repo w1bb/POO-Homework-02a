@@ -37,12 +37,11 @@ public final class UpgradesPage extends Page {
      * @return A PageResponse object containing useful information about the request.
      */
     private PageResponse executeBuyTokens(final PageQuery pq) {
-        PageResponse pageResponse = new PageResponse();
         User currentUser = pq.getCurrentUser();
-        pageResponse.setNewUser(currentUser);
         boolean bought = currentUser.buyTokens(
                 Integer.parseInt(pq.getCurrentActionsInput().getCount()));
-        return bought ? pageResponse : PageResponse.getErrorPageResponse();
+        PageResponse.Builder builder = new PageResponse.Builder();
+        return bought ? builder.newUser(currentUser).build() : PageResponse.Builder.createError();
     }
 
     /**
@@ -51,11 +50,10 @@ public final class UpgradesPage extends Page {
      * @return A PageResponse object containing useful information about the request.
      */
     private PageResponse executeBuyPremiumAccount(final PageQuery pq) {
-        PageResponse pageResponse = new PageResponse();
         User currentUser = pq.getCurrentUser();
-        pageResponse.setNewUser(currentUser);
         boolean bought = currentUser.buyPremium();
-        return bought ? pageResponse : PageResponse.getErrorPageResponse();
+        PageResponse.Builder builder = new PageResponse.Builder();
+        return bought ? builder.newUser(currentUser).build() : PageResponse.Builder.createError();
     }
 
     /**
@@ -67,7 +65,7 @@ public final class UpgradesPage extends Page {
         return switch (pq.getCurrentActionsInput().getFeature()) {
             case "buy tokens" -> executeBuyTokens(pq);
             case "buy premium account" -> executeBuyPremiumAccount(pq);
-            default -> PageResponse.getErrorPageResponse();
+            default -> PageResponse.Builder.createError();
         };
     }
 

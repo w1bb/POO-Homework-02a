@@ -60,12 +60,10 @@ public final class SeeDetailsPage extends Page {
             purchasedMovies.add(currentMovie);
         } else {
             // Cannot buy
-            return PageResponse.getErrorPageResponse();
+            return PageResponse.Builder.createError();
         }
-        PageResponse pageResponse = new PageResponse();
-        pageResponse.setNewUser(currentUser);
-        pageResponse.setActionOutput(getCurrentMovieAsObjectNode());
-        return pageResponse;
+        PageResponse.Builder builder = new PageResponse.Builder();
+        return builder.newUser(currentUser).actionOutput(getCurrentMovieAsObjectNode()).build();
     }
 
     /**
@@ -76,13 +74,11 @@ public final class SeeDetailsPage extends Page {
     private PageResponse executeWatch(final PageQuery pq) {
         User currentUser = pq.getCurrentUser();
         if (!currentUser.getPurchasedMovies().contains(currentMovie)) {
-            return PageResponse.getErrorPageResponse();
+            return PageResponse.Builder.createError();
         }
         currentMovie.watch(currentUser);
-        PageResponse pageResponse = new PageResponse();
-        pageResponse.setNewUser(currentUser);
-        pageResponse.setActionOutput(getCurrentMovieAsObjectNode());
-        return pageResponse;
+        PageResponse.Builder builder = new PageResponse.Builder();
+        return builder.newUser(currentUser).actionOutput(getCurrentMovieAsObjectNode()).build();
     }
 
     /**
@@ -94,16 +90,14 @@ public final class SeeDetailsPage extends Page {
         User currentUser = pq.getCurrentUser();
         if (!currentUser.getPurchasedMovies().contains(currentMovie)
                 || !currentUser.getWatchedMovies().contains(currentMovie)) {
-            return PageResponse.getErrorPageResponse();
+            return PageResponse.Builder.createError();
         }
         if (!currentUser.getLikedMovies().contains(currentMovie)) {
             currentUser.getLikedMovies().add(currentMovie);
             currentMovie.like(currentUser);
         }
-        PageResponse pageResponse = new PageResponse();
-        pageResponse.setNewUser(currentUser);
-        pageResponse.setActionOutput(getCurrentMovieAsObjectNode());
-        return pageResponse;
+        PageResponse.Builder builder = new PageResponse.Builder();
+        return builder.newUser(currentUser).actionOutput(getCurrentMovieAsObjectNode()).build();
     }
 
     /**
@@ -115,20 +109,18 @@ public final class SeeDetailsPage extends Page {
         User currentUser = pq.getCurrentUser();
         if (pq.getCurrentActionsInput().getRate() < Movie.MINIMUM_RATING
             || pq.getCurrentActionsInput().getRate() > Movie.MAXIMUM_RATING) {
-            return PageResponse.getErrorPageResponse();
+            return PageResponse.Builder.createError();
         }
         if (!currentUser.getPurchasedMovies().contains(currentMovie)
                 || !currentUser.getWatchedMovies().contains(currentMovie)) {
-            return PageResponse.getErrorPageResponse();
+            return PageResponse.Builder.createError();
         }
         if (!currentUser.getRatedMovies().contains(currentMovie)) {
             currentUser.getRatedMovies().add(currentMovie);
             currentMovie.rate(currentUser, pq.getCurrentActionsInput().getRate());
         }
-        PageResponse pageResponse = new PageResponse();
-        pageResponse.setNewUser(currentUser);
-        pageResponse.setActionOutput(getCurrentMovieAsObjectNode());
-        return pageResponse;
+        PageResponse.Builder builder = new PageResponse.Builder();
+        return builder.newUser(currentUser).actionOutput(getCurrentMovieAsObjectNode()).build();
     }
 
     /**
@@ -138,14 +130,14 @@ public final class SeeDetailsPage extends Page {
      */
     public PageResponse execute(final PageQuery pq) {
         if (currentMovie == null) {
-            return PageResponse.getErrorPageResponse();
+            return PageResponse.Builder.createError();
         }
         return switch (pq.getCurrentActionsInput().getFeature()) {
             case "purchase" -> executePurchase(pq);
             case "watch" -> executeWatch(pq);
             case "like" -> executeLike(pq);
             case "rate" -> executeRate(pq);
-            default -> PageResponse.getErrorPageResponse(); // This should NEVER be reached
+            default -> PageResponse.Builder.createError(); // This should NEVER be reached
         };
     }
 
@@ -162,12 +154,12 @@ public final class SeeDetailsPage extends Page {
                 pq.getCurrentUser());
         if (currentMovie == null) {
             // This should NEVER be reached (?)
-            return PageResponse.getErrorPageResponse();
+            return PageResponse.Builder.createError();
         }
-        PageResponse pageResponse = new PageResponse();
-        pageResponse.setNewUser(pq.getCurrentUser());
-        pageResponse.setActionOutput(getCurrentMovieAsObjectNode());
-        return pageResponse;
+        PageResponse.Builder builder = new PageResponse.Builder();
+        return builder.newUser(pq.getCurrentUser())
+                .actionOutput(getCurrentMovieAsObjectNode())
+                .build();
     }
 
     private ObjectNode getCurrentMovieAsObjectNode() {

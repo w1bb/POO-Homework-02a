@@ -43,17 +43,18 @@ public final class LoginPage extends Page {
         User newUser = pq.getUsersDB().search(searchedUserCredentials.getName(),
                 searchedUserCredentials.getPassword());
         if (newUser == null) {
-            return PageResponse.getErrorPageResponse();
+            return PageResponse.Builder.createError();
         }
 
         // Change current user
-        PageResponse pageResponse = new PageResponse();
-        pageResponse.setNewPage(PageFactory.getPage("auth-homepage"));
-        pageResponse.setNewUser(newUser);
+        PageResponse.Builder builder = new PageResponse.Builder();
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.set("currentUser", newUser.toObjectNode());
-        pageResponse.setActionOutput(objectNode);
-        return pageResponse;
+
+        return builder.newPage(PageFactory.getPage("auth-homepage"))
+                .newUser(newUser)
+                .actionOutput(objectNode)
+                .build();
     }
 
     /**
@@ -63,7 +64,7 @@ public final class LoginPage extends Page {
      */
     public PageResponse execute(final PageQuery pq) {
         return pq.getCurrentActionsInput().getFeature().equals("login")
-                ? executeLogin(pq) : PageResponse.getErrorPageResponse();
+                ? executeLogin(pq) : PageResponse.Builder.createError();
     }
 
     /**

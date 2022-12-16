@@ -21,21 +21,17 @@ public final class ChangePageInterpreter implements GeneralInterpreter {
      */
     @Override
     public PageResponse executeAction(final PageQuery pq) {
-        PageResponse pageResponse = new PageResponse();
+        PageResponse.Builder builder = new PageResponse.Builder();
+        builder.newUser(pq.getCurrentUser()).moviesDBSubset(pq.getMoviesDBSubset());
         if (pq.getCurrentPage().canVisit(pq.getCurrentActionsInput().getPage())) {
-            pageResponse.setNewPage(PageFactory.getPage(pq.getCurrentActionsInput().getPage()));
-            pageResponse.setNewUser(pq.getCurrentUser());
-            pageResponse.setMoviesDBSubset(pq.getMoviesDBSubset());
-            pageResponse.setActionOutput(null);
+            builder.newPage(PageFactory.getPage(pq.getCurrentActionsInput().getPage()))
+                    .actionOutput(null);
         } else {
-            pageResponse.setNewPage(pq.getCurrentPage());
-            pageResponse.setNewUser(pq.getCurrentUser());
-            pageResponse.setMoviesDBSubset(pq.getMoviesDBSubset());
             ObjectNode objectNode = objectMapper.createObjectNode();
             objectNode.put("error", "Error");
-            pageResponse.setActionOutput(objectNode);
+            builder.newPage(pq.getCurrentPage()).actionOutput(objectNode);
         }
-        return pageResponse;
+        return builder.build();
     }
 
 
