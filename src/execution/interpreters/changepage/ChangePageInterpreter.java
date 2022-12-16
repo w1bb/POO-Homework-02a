@@ -29,6 +29,7 @@ public final class ChangePageInterpreter implements GeneralInterpreter {
         } else {
             ObjectNode objectNode = objectMapper.createObjectNode();
             objectNode.put("error", "Error");
+
             builder.newPage(pq.getCurrentPage()).actionOutput(objectNode);
         }
         return builder.build();

@@ -18,7 +18,7 @@ public final class Main {
      */
     public static void main(final String[] args) throws IOException {
         String inputFilename = args[0];
-        solveInput(inputFilename, Test.OUT_FILE);
+        solveInput(inputFilename, "results.out");
     }
 
     /**
