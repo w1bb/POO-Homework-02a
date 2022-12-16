@@ -28,9 +28,9 @@ There are a few design choices I want to address:
        private class method can be in between two public instance methods. The goal is to make reading and understanding the
        code easier.
 
-## Documentation
+## Design patterns
 
-In short, the control is given to an interpreter that "understands" the commands and translates them to actual user-webpage interatction.
+Since there are many design patterns used throughout the project, this section shall keep track of them.
 
 Every time the interpreter is asked to follow a request, a PageRequest is generated and sent over to the appropriate sub-interpreter, and then it is sent to the appropriate page.
 This makes use of the **STRATEGY** design pattern. 
@@ -40,6 +40,16 @@ Pages are static and independent of the logged-in user, meaning the **SINGLETON*
 A certain page can be generated (since singleton is used, it will simply be returned) using its name by making use of the **FACTORY** design pattern.
 
 Page responses are also created after any action using the **BUILDER** design pattern.
+
+## Documentation
+
+In short, the control is given to an interpreter that "understands" the commands and translates them to actual user-webpage interaction.
+A request is sent to the page that should resolve it (that page is determined using the "page" filed in the json files, and the conversion string-class is made using the PageFactory class).
+
+In case of special pages, such as the "see details" page, there exists a special method called "afterEnter" that should be called when such a context change happens.
+This method might redirect users to other webpages (see the "logout" page) or might output different information based on other fields (e.g. "see details").
+
+Page responses are generated after any interaction with the webpages and they represent the means of communication with the interpreter / user.
 
 This makes the flow of the program very easy to read and understand. For more info, please take a quick look at the
 code, as it is **very** well documented.
